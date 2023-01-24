@@ -118,7 +118,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         {selectedClass && (
-          <div className="flex flex-col">
+          <div className="flex flex-col overflow-auto">
             <div className="flex flex-col bg-zinc-900 text-white">
               <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-b border-b-zinc-700 text-lg">
                 <div
@@ -150,10 +150,11 @@ const Home: NextPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full max-w-2xl p-6">
+              <div className="aspect-video w-full max-w-2xl p-6">
                 <ReactPlayer
                   key={`video-${selectedClass.id}`}
                   width={"100%"}
+                  height={"100%"}
                   controls
                   url={selectedClass.video}
                 />
