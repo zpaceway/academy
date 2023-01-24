@@ -28,7 +28,7 @@ const NavBar = ({
   const percentage = 17;
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-10 flex h-full w-full min-w-full flex-col divide-y overflow-auto border-r border-zinc-300 bg-white sm:w-[18rem] sm:min-w-[18rem] sm:max-w-[18rem] ${
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-full min-w-full flex-col divide-y overflow-auto border-r border-zinc-300 bg-white sm:w-[18rem] sm:min-w-[18rem] sm:max-w-[18rem] ${
         !isOpened ? "-translate-x-[100%] sm:fixed" : "lg:static"
       }`}
     >
@@ -39,7 +39,7 @@ const NavBar = ({
         </div>
       </div>
       <div className="flex gap-4 p-6">
-        <div className="max-w-[4rem]">
+        <div className="max-w-[4.5rem]">
           <CircularProgressbar
             value={percentage}
             text={`${percentage}%`}
@@ -51,13 +51,13 @@ const NavBar = ({
             })}
           />
         </div>
-        <div className="flex flex-col text-xs">
+        <div className="flex flex-col text-sm">
           <div className="pb-2 text-base font-light">Zpaceway Academy</div>
           <div className="text-zinc-400">8 of 44 completed</div>
           <div className="text-orange-600">See my progress</div>
         </div>
       </div>
-      <div className="flex items-center gap-2 p-6 text-sm text-zinc-400">
+      <div className="flex items-center gap-2 p-6 text-base text-zinc-400">
         <div className="text-2xl">
           <MdOutlineSearch />
         </div>

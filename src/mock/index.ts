@@ -13,7 +13,16 @@ const modules: IModuleUser[] = [
         favorite: false,
         stars: 4,
         video: "https://www.youtube.com/watch?v=pquPUX1EihM",
-        html: "Hi guys, in this class, I'm gonna tell you how web development works.",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "1",
       },
       {
@@ -24,7 +33,16 @@ const modules: IModuleUser[] = [
         favorite: true,
         stars: 5,
         video: "https://www.youtube.com/watch?v=-AAA68uZuWU",
-        html: "In this lesson we are going to talk about the different types of development paths you coul take.",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "1",
       },
       {
@@ -35,7 +53,16 @@ const modules: IModuleUser[] = [
         favorite: false,
         stars: 5,
         video: "https://www.youtube.com/watch?v=C-EHoNfkoDM",
-        html: "Let's talk about how you can start becoming a professional Sofware Developer.",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "1",
       },
     ],
@@ -52,7 +79,16 @@ const modules: IModuleUser[] = [
         favorite: false,
         stars: 3,
         video: "https://www.youtube.com/watch?v=WG5ikvJ2TKA",
-        html: "What is the Frontend?",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "2",
       },
       {
@@ -62,7 +98,16 @@ const modules: IModuleUser[] = [
         saved: false,
         favorite: false,
         video: "https://www.youtube.com/watch?v=XBu54nfzxAQ",
-        html: "What is the Backend?",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "2",
       },
       {
@@ -72,7 +117,16 @@ const modules: IModuleUser[] = [
         saved: false,
         favorite: false,
         video: "https://www.youtube.com/watch?v=Xrgk023l4lI",
-        html: "What is the DevOps?",
+        html: `Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
+          labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
+          animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
+          aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+          pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit
+          commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa
+          proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia
+          eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
+          Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
+          culpa duis.`,
         moduleId: "2",
       },
     ],

@@ -31,9 +31,9 @@ const NavInlineModule = ({
         </div>
         <div className="flex w-full flex-col justify-between pt-1">
           <div className="flex justify-between">
-            <div className="text-xs text-zinc-400">Module {index}</div>
+            <div className="text-sm text-zinc-400">Module {index}</div>
             <div
-              className={`text-xs font-bold ${
+              className={`text-sm font-bold ${
                 selected ? "text-green-500" : "text-gray-400"
               }`}
             >
@@ -44,17 +44,17 @@ const NavInlineModule = ({
               / {module.classes.length}
             </div>
           </div>
-          <div className="flex text-sm font-light">
+          <div className="flex text-base font-light">
             <div>{module.name}</div>
           </div>
         </div>
       </div>
       {selected && (
-        <div className="flex flex-col py-4">
+        <div className="flex flex-col">
           {module.classes.map((moduleClass) => (
             <div
               key={`module-${moduleClass.id}`}
-              className={`flex cursor-pointer gap-2 px-6 py-4 text-sm font-light ${
+              className={`flex cursor-pointer gap-2 px-6 py-4 text-base font-light ${
                 selectedClassId === moduleClass.id
                   ? "bg-black bg-opacity-5"
                   : ""

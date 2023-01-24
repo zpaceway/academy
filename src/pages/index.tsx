@@ -120,7 +120,7 @@ const Home: NextPage = () => {
         {selectedClass && (
           <div className="flex flex-col">
             <div className="flex flex-col bg-zinc-900 text-white">
-              <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-b border-b-zinc-700 text-xl">
+              <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-b border-b-zinc-700 text-lg">
                 <div
                   onClick={() => {
                     if (previousToSelectedClass) {
@@ -128,14 +128,12 @@ const Home: NextPage = () => {
                       setSelectedClassId(previousToSelectedClass.id);
                     }
                   }}
-                  className="flex cursor-pointer items-start gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
+                  className="relative flex cursor-pointer items-start gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
                 >
-                  <div className="hidden sm:block">
-                    {previousToSelectedClass && (
-                      <AiOutlineLeftCircle className="text-4xl text-orange-700" />
-                    )}
+                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 sm:static sm:block sm:text-4xl sm:text-orange-700">
+                    {previousToSelectedClass && <AiOutlineLeftCircle />}
                   </div>
-                  <div>{previousToSelectedClass?.name}</div>
+                  <div className="z-10">{previousToSelectedClass?.name}</div>
                 </div>
                 <div
                   onClick={() => {
@@ -144,21 +142,18 @@ const Home: NextPage = () => {
                       setSelectedClassId(nextToSelectedClass.id);
                     }
                   }}
-                  className="flex cursor-pointer items-start justify-end gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
+                  className="relative flex cursor-pointer items-start justify-end gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
                 >
-                  <div>{nextToSelectedClass?.name}</div>
-                  <div className="hidden sm:block">
-                    {nextToSelectedClass && (
-                      <AiOutlineRightCircle className="text-4xl text-orange-700" />
-                    )}
+                  <div className="z-10">{nextToSelectedClass?.name}</div>
+                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 sm:static sm:block sm:text-4xl sm:text-orange-700">
+                    {nextToSelectedClass && <AiOutlineRightCircle />}
                   </div>
                 </div>
               </div>
-              <div className="aspect-video w-full max-w-2xl p-6">
+              <div className="w-full max-w-2xl p-6">
                 <ReactPlayer
                   key={`video-${selectedClass.id}`}
                   width={"100%"}
-                  height={"100%"}
                   controls
                   url={selectedClass.video}
                 />
@@ -169,7 +164,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className="p-6">{selectedClass.html}</div>
+            <div className="max-w-4xl p-6">{selectedClass.html}</div>
           </div>
         )}
       </div>
