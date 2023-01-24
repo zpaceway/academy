@@ -142,7 +142,9 @@ const Home: NextPage = () => {
                       <AiOutlineLeftCircle className="transition-none" />
                     )}
                   </div>
-                  <div className="z-10">{previousToSelectedClass?.name}</div>
+                  <div className="z-10 text-center sm:text-left">
+                    {previousToSelectedClass?.name}
+                  </div>
                 </div>
                 <div
                   onClick={() => {
@@ -153,7 +155,7 @@ const Home: NextPage = () => {
                   }}
                   className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-end"
                 >
-                  <div className="z-10 text-right">
+                  <div className="z-10 text-center sm:text-right">
                     {nextToSelectedClass?.name}
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
