@@ -90,6 +90,8 @@ const Home: NextPage = () => {
         selectedModuleId={selectedModuleId}
         selectedClassId={selectedClassId}
         onModuleClick={(moduleId) => {
+          setIsNavBarOpened(false);
+
           if (moduleId === selectedModuleId) {
             setSelectedModuleId(undefined);
             return null;
@@ -101,7 +103,10 @@ const Home: NextPage = () => {
 
           return null;
         }}
-        onClassClick={(classId) => setSelectedClassId(classId)}
+        onClassClick={(classId) => {
+          setSelectedClassId(classId);
+          setIsNavBarOpened(false);
+        }}
       />
       <div className="flex h-full w-full flex-col">
         <div className="flex h-20 w-full items-center justify-between bg-orange-600 p-6 text-2xl font-bold text-white">
