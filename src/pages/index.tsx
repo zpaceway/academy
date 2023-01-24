@@ -10,8 +10,9 @@ import { modules as mockedModules } from "../mock";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const [selectedModuleId, setSelectedModuleId] = useState<string>();
+  const [openedModuleId, setOpenedModuleId] = useState<string>();
   const [selectedClassId, setSelectedClassId] = useState<string>();
+  const [selectedClassModuleId, setSelectedClassModuleId] = useState<string>();
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
   const [modules, setModules] = useState(mockedModules);
 
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
     useMemo(() => {
       let moduleIndex = 0;
       const selectedModule = modules.find((module, index) => {
-        const isSelected = module.id === selectedModuleId;
+        const isSelected = module.id === selectedClassModuleId;
         if (isSelected) {
           moduleIndex = index;
         }
@@ -32,7 +33,7 @@ const Home: NextPage = () => {
       const nextToSelectedModule = modules[moduleIndex + 1];
 
       return [previousToSelectedModule, selectedModule, nextToSelectedModule];
-    }, [modules, selectedModuleId]);
+    }, [modules, selectedClassModuleId]);
 
   const [previousToSelectedClass, selectedClass, nextToSelectedClass] =
     useMemo(() => {
@@ -63,7 +64,7 @@ const Home: NextPage = () => {
     ]);
 
   useEffect(() => {
-    if (window.screen.width >= 640) {
+    if (window.innerWidth >= 640) {
       return setIsNavBarOpened(true);
     }
     return setIsNavBarOpened(false);
@@ -71,7 +72,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const moduleId = modules[0]?.id;
-    setSelectedModuleId(moduleId);
+    setOpenedModuleId(moduleId);
+    setSelectedClassModuleId(moduleId);
     setSelectedClassId(
       modules.find((module) => module.id === moduleId)?.classes?.[0]?.id
     );
@@ -87,25 +89,23 @@ const Home: NextPage = () => {
         modules={modules}
         isOpened={isNavBarOpened}
         onToggle={() => setIsNavBarOpened((state) => !state)}
-        selectedModuleId={selectedModuleId}
+        openedModuleId={openedModuleId}
         selectedClassId={selectedClassId}
         onModuleClick={(moduleId) => {
-          setIsNavBarOpened(false);
-
-          if (moduleId === selectedModuleId) {
-            setSelectedModuleId(undefined);
+          if (moduleId === openedModuleId) {
+            setOpenedModuleId(undefined);
             return null;
           }
-          setSelectedModuleId(moduleId);
-          setSelectedClassId(
-            modules.find((module) => module.id === moduleId)?.classes?.[0]?.id
-          );
+          setOpenedModuleId(moduleId);
 
           return null;
         }}
-        onClassClick={(classId) => {
+        onClassClick={(moduleId, classId) => {
+          if (window.innerWidth < 640) {
+            setIsNavBarOpened(false);
+          }
+          setSelectedClassModuleId(moduleId);
           setSelectedClassId(classId);
-          setIsNavBarOpened(false);
         }}
       />
       <div className="flex h-full w-full flex-col">
@@ -129,29 +129,37 @@ const Home: NextPage = () => {
                 <div
                   onClick={() => {
                     if (previousToSelectedClass) {
-                      setSelectedModuleId(previousToSelectedClass.moduleId);
+                      setSelectedClassModuleId(
+                        previousToSelectedClass.moduleId
+                      );
                       setSelectedClassId(previousToSelectedClass.id);
                     }
                   }}
-                  className="relative flex cursor-pointer items-start gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
+                  className="min-h-40 group relative flex cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-start"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 sm:static sm:block sm:text-4xl sm:text-orange-700">
-                    {previousToSelectedClass && <AiOutlineLeftCircle />}
+                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
+                    {previousToSelectedClass && (
+                      <AiOutlineLeftCircle className="transition-none" />
+                    )}
                   </div>
                   <div className="z-10">{previousToSelectedClass?.name}</div>
                 </div>
                 <div
                   onClick={() => {
                     if (nextToSelectedClass) {
-                      setSelectedModuleId(nextToSelectedClass.moduleId);
+                      setSelectedClassModuleId(nextToSelectedClass.moduleId);
                       setSelectedClassId(nextToSelectedClass.id);
                     }
                   }}
-                  className="relative flex cursor-pointer items-start justify-end gap-4 p-8 hover:bg-zinc-800 hover:brightness-125 sm:items-center"
+                  className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-end"
                 >
-                  <div className="z-10">{nextToSelectedClass?.name}</div>
-                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 sm:static sm:block sm:text-4xl sm:text-orange-700">
-                    {nextToSelectedClass && <AiOutlineRightCircle />}
+                  <div className="z-10 text-right">
+                    {nextToSelectedClass?.name}
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
+                    {nextToSelectedClass && (
+                      <AiOutlineRightCircle className="transition-none" />
+                    )}
                   </div>
                 </div>
               </div>

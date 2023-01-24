@@ -9,22 +9,21 @@ interface Props {
   modules: IModuleUser[];
   isOpened: boolean;
   onToggle: () => void;
-  selectedModuleId?: string;
+  openedModuleId?: string;
   selectedClassId?: string;
   onModuleClick: (moduleId?: string) => void;
-  onClassClick: (classId: string) => void;
+  onClassClick: (moduleId: string, classId: string) => void;
 }
 
 const NavBar = ({
   modules,
   isOpened,
   onToggle,
-  selectedModuleId,
+  openedModuleId,
   selectedClassId,
   onModuleClick,
   onClassClick,
 }: Props) => {
-  console.log(isOpened);
   const percentage = 17;
   return (
     <div
@@ -75,10 +74,12 @@ const NavBar = ({
             key={`module-${module.id}`}
             index={index + 1}
             module={module}
-            selected={selectedModuleId === module.id}
+            opened={openedModuleId === module.id}
             selectedClassId={selectedClassId}
             onModuleClick={() => onModuleClick(module.id)}
-            onClassClick={(classId) => onClassClick(classId)}
+            onClassClick={(moduleId, classId) =>
+              onClassClick(moduleId, classId)
+            }
           />
         ))}
       </div>

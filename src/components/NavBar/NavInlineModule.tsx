@@ -4,16 +4,16 @@ import type { IModuleUser } from "../../interfaces/IModule";
 interface Props {
   index: number;
   module: IModuleUser;
-  selected: boolean;
+  opened: boolean;
   selectedClassId?: string;
   onModuleClick: () => void;
-  onClassClick: (classId: string) => void;
+  onClassClick: (moduleId: string, classId: string) => void;
 }
 
 const NavInlineModule = ({
   index,
   module,
-  selected,
+  opened,
   selectedClassId,
   onModuleClick,
   onClassClick,
@@ -22,7 +22,7 @@ const NavInlineModule = ({
     <div className="flex select-none flex-col">
       <div
         className={`flex cursor-pointer justify-between gap-4 rounded-tl-md border-l-8 px-4 py-6 ${
-          selected ? "border-l-orange-600" : "border-l-transparent"
+          opened ? "border-l-orange-600" : "border-l-transparent"
         }`}
         onClick={onModuleClick}
       >
@@ -34,7 +34,7 @@ const NavInlineModule = ({
             <div className="text-sm text-zinc-400">Module {index}</div>
             <div
               className={`text-sm font-bold ${
-                selected ? "text-green-500" : "text-gray-400"
+                opened ? "text-green-500" : "text-gray-400"
               }`}
             >
               {
@@ -49,7 +49,7 @@ const NavInlineModule = ({
           </div>
         </div>
       </div>
-      {selected && (
+      {opened && (
         <div className="flex flex-col">
           {module.classes.map((moduleClass) => (
             <div
@@ -59,7 +59,7 @@ const NavInlineModule = ({
                   ? "bg-black bg-opacity-5"
                   : ""
               }`}
-              onClick={() => onClassClick(moduleClass.id)}
+              onClick={() => onClassClick(moduleClass.moduleId, moduleClass.id)}
             >
               <AiFillCheckCircle
                 className={`block shrink-0 grow-0 text-2xl ${
