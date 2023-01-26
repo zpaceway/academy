@@ -131,8 +131,14 @@ const Home: NextPage = () => {
                 <div
                   onClick={() => {
                     if (previousToSelectedLesson) {
-                      setSelectedChapterId(previousToSelectedLesson.chapterId);
-                      setSelectedLessonId(previousToSelectedLesson.id);
+                      const chapterId = previousToSelectedLesson.chapterId;
+                      const lessonId = previousToSelectedLesson.id;
+
+                      setSelectedChapterId(chapterId);
+                      if (chapterId !== openedChapterId) {
+                        setOpenedChapterId(chapterId);
+                      }
+                      setSelectedLessonId(lessonId);
                     }
                   }}
                   className="min-h-40 group relative flex cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-start"
@@ -149,8 +155,14 @@ const Home: NextPage = () => {
                 <div
                   onClick={() => {
                     if (nextToSelectedLesson) {
-                      setSelectedChapterId(nextToSelectedLesson.chapterId);
-                      setSelectedLessonId(nextToSelectedLesson.id);
+                      const chapterId = nextToSelectedLesson.chapterId;
+                      const lessonId = nextToSelectedLesson.id;
+
+                      setSelectedChapterId(chapterId);
+                      if (chapterId !== openedChapterId) {
+                        setOpenedChapterId(chapterId);
+                      }
+                      setSelectedLessonId(lessonId);
                     }
                   }}
                   className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-end"
