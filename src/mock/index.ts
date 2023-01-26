@@ -23,7 +23,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "1",
+        chapterId: "1",
       },
       {
         id: "2",
@@ -43,7 +43,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "1",
+        chapterId: "1",
       },
       {
         id: "3",
@@ -63,7 +63,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "1",
+        chapterId: "1",
       },
     ],
   },
@@ -89,7 +89,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "2",
+        chapterId: "2",
       },
       {
         id: "5",
@@ -108,7 +108,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "2",
+        chapterId: "2",
       },
       {
         id: "6",
@@ -127,7 +127,7 @@ const chapters: IChapterUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        lessonId: "2",
+        chapterId: "2",
       },
     ],
   },
