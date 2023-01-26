@@ -58,19 +58,17 @@ model VerificationToken {
     @@map("tokens")
 }
 
-model ModuleClass {
-    id       String  @id @default(auto()) @map("_id") @db.ObjectId
-    name     String
-    video    String
-    html     String
-    Module   Module? @relation(fields: [moduleId], references: [id])
-    moduleId String? @db.ObjectId
+type Lesson {
+    name      String
+    video     String
+    html      String
+    chapterId String @db.ObjectId
 }
 
-model Module {
-    id      String        @id @default(auto()) @map("_id") @db.ObjectId
+model Chapter {
+    id      String   @id @default(auto()) @map("_id") @db.ObjectId
     name    String
-    classes ModuleClass[]
+    lessons Lesson[]
 
-    @@map("modules")
+    @@map("chapters")
 }
