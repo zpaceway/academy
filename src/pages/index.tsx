@@ -9,7 +9,11 @@ import NavBar from "../components/NavBar";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-  const { data: chapters = [] } = api.chapters.getChapters.useQuery();
+  const chaptersResponse = api.chapters.getChapters.useQuery();
+  const chapters = useMemo(
+    () => chaptersResponse.data || [],
+    [chaptersResponse.data]
+  );
   const [openedChapterId, setOpenedChapterId] = useState<string>();
   const [selectedLessonId, setSelectedLessonId] = useState<string>();
   const [selectedChapterId, setSelectedChapterId] = useState<string>();
@@ -80,7 +84,7 @@ const Home: NextPage = () => {
     );
   }, [chapters]);
 
-  if (isNavBarOpened === undefined) {
+  if (isNavBarOpened === undefined || !chaptersResponse.data) {
     return <LoadingScreen />;
   }
 
