@@ -1,17 +1,17 @@
-interface IClass {
+interface ILesson {
   id: string;
   name: string;
-  moduleId: string;
+  chapterId: string;
   video?: string;
   html?: string;
 }
 
-interface IClassUser extends IClass {
+interface ILessonUser extends ILesson {
   completed: boolean;
   saved: boolean;
   favorite: boolean;
   stars?: 1 | 2 | 3 | 4 | 5;
 }
 
-export default IClass;
-export type { IClassUser };
+export default ILesson;
+export type { ILessonUser };

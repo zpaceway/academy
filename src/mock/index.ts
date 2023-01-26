@@ -1,10 +1,10 @@
-import type { IModuleUser } from "../interfaces/IModule";
+import type { IChapterUser } from "../interfaces/IChapter";
 
-const modules: IModuleUser[] = [
+const chapters: IChapterUser[] = [
   {
     id: "1",
     name: "Introduction",
-    classes: [
+    lessons: [
       {
         id: "1",
         name: "What is software development?",
@@ -23,7 +23,7 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "1",
+        lessonId: "1",
       },
       {
         id: "2",
@@ -43,7 +43,7 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "1",
+        lessonId: "1",
       },
       {
         id: "3",
@@ -63,14 +63,14 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "1",
+        lessonId: "1",
       },
     ],
   },
   {
     id: "2",
     name: "Technologies",
-    classes: [
+    lessons: [
       {
         id: "4",
         name: "The Frontend stack",
@@ -89,7 +89,7 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "2",
+        lessonId: "2",
       },
       {
         id: "5",
@@ -108,7 +108,7 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "2",
+        lessonId: "2",
       },
       {
         id: "6",
@@ -127,10 +127,10 @@ const modules: IModuleUser[] = [
           eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim.
           Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et
           culpa duis.`,
-        moduleId: "2",
+        lessonId: "2",
       },
     ],
   },
 ];
 
-export { modules };
+export { chapters };

@@ -1,28 +1,28 @@
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineSearch } from "react-icons/md";
-import type { IModuleUser } from "../../interfaces/IModule";
-import NavInlineModule from "./NavInlineModule";
+import type { IChapterUser } from "../../interfaces/IChapter";
+import NavInlineChapter from "./NavInlineChapter";
 import "react-circular-progressbar/dist/styles.css";
 
 interface Props {
-  modules: IModuleUser[];
+  chapters: IChapterUser[];
   isOpened: boolean;
   onToggle: () => void;
-  openedModuleId?: string;
-  selectedClassId?: string;
-  onModuleClick: (moduleId?: string) => void;
-  onClassClick: (moduleId: string, classId: string) => void;
+  openedChapterId?: string;
+  selectedLessonId?: string;
+  onChapterClick: (chapterId?: string) => void;
+  onLessonClick: (chapterId: string, lessonId: string) => void;
 }
 
 const NavBar = ({
-  modules,
+  chapters,
   isOpened,
   onToggle,
-  openedModuleId,
-  selectedClassId,
-  onModuleClick,
-  onClassClick,
+  openedChapterId,
+  selectedLessonId,
+  onChapterClick,
+  onLessonClick,
 }: Props) => {
   const percentage = 17;
   return (
@@ -63,22 +63,22 @@ const NavBar = ({
         <div className="flex w-full">
           <input
             type="text"
-            placeholder="Search for a class or tag"
+            placeholder="Search for a lesson or tag"
             className="flex w-full outline-none"
           />
         </div>
       </div>
       <div className="flex flex-col divide-y">
-        {modules.map((module, index) => (
-          <NavInlineModule
-            key={`module-${module.id}`}
+        {chapters.map((chapter, index) => (
+          <NavInlineChapter
+            key={`chapter-${chapter.id}`}
             index={index + 1}
-            module={module}
-            opened={openedModuleId === module.id}
-            selectedClassId={selectedClassId}
-            onModuleClick={() => onModuleClick(module.id)}
-            onClassClick={(moduleId, classId) =>
-              onClassClick(moduleId, classId)
+            chapter={chapter}
+            opened={openedChapterId === chapter.id}
+            selectedLessonId={selectedLessonId}
+            onChapterClick={() => onChapterClick(chapter.id)}
+            onLessonClick={(chapterId, lessonId) =>
+              onLessonClick(chapterId, lessonId)
             }
           />
         ))}

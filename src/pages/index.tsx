@@ -6,61 +6,63 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import ReactPlayer from "react-player";
 import LoadingScreen from "../components/LoadingScreen";
 import NavBar from "../components/NavBar";
-import { modules as mockedModules } from "../mock";
+import { chapters as mockedChapters } from "../mock";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const [openedModuleId, setOpenedModuleId] = useState<string>();
-  const [selectedClassId, setSelectedClassId] = useState<string>();
-  const [selectedClassModuleId, setSelectedClassModuleId] = useState<string>();
+  const [openedChapterId, setOpenedChapterId] = useState<string>();
+  const [selectedLessonId, setSelectedLessonId] = useState<string>();
+  const [selectedChapterId, setSelectedChapterId] = useState<string>();
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
-  const [modules, setModules] = useState(mockedModules);
+  const [chapters, setChapters] = useState(mockedChapters);
 
   const { data: sessionData } = useSession();
 
-  const [previousToSelectedModule, selectedModule, nextToSelectedModule] =
+  const [previousToSelectedChapter, selectedChapter, nextToSelectedChapter] =
     useMemo(() => {
-      let moduleIndex = 0;
-      const selectedModule = modules.find((module, index) => {
-        const isSelected = module.id === selectedClassModuleId;
+      let chapterIndex = 0;
+      const selectedChapter = chapters.find((chapter, index) => {
+        const isSelected = chapter.id === selectedChapterId;
         if (isSelected) {
-          moduleIndex = index;
+          chapterIndex = index;
         }
         return isSelected;
       });
 
-      const previousToSelectedModule = modules[moduleIndex - 1];
-      const nextToSelectedModule = modules[moduleIndex + 1];
+      const previousToSelectedChapter = chapters[chapterIndex - 1];
+      const nextToSelectedChapter = chapters[chapterIndex + 1];
 
-      return [previousToSelectedModule, selectedModule, nextToSelectedModule];
-    }, [modules, selectedClassModuleId]);
+      return [
+        previousToSelectedChapter,
+        selectedChapter,
+        nextToSelectedChapter,
+      ];
+    }, [chapters, selectedChapterId]);
 
-  const [previousToSelectedClass, selectedClass, nextToSelectedClass] =
+  const [previousToSelectedLesson, selectedLesson, nextToSelectedLesson] =
     useMemo(() => {
-      let classIndex = 0;
-      const selectedClass = selectedModule?.classes?.find(
-        (moduleClass, index) => {
-          const isSelected = moduleClass.id === selectedClassId;
-          if (isSelected) {
-            classIndex = index;
-          }
-          return isSelected;
+      let lessonIndex = 0;
+      const selectedLesson = selectedChapter?.lessons?.find((lesson, index) => {
+        const isSelected = lesson.id === selectedLessonId;
+        if (isSelected) {
+          lessonIndex = index;
         }
-      );
+        return isSelected;
+      });
 
-      const previousToSelectedClass =
-        selectedModule?.classes?.[classIndex - 1] ||
-        previousToSelectedModule?.classes?.at?.(-1);
-      const nextToSelectedClass =
-        selectedModule?.classes?.[classIndex + 1] ||
-        nextToSelectedModule?.classes?.at?.(0);
+      const previousToSelectedLesson =
+        selectedChapter?.lessons?.[lessonIndex - 1] ||
+        previousToSelectedChapter?.lessons?.at?.(-1);
+      const nextToSelectedLesson =
+        selectedChapter?.lessons?.[lessonIndex + 1] ||
+        nextToSelectedChapter?.lessons?.at?.(0);
 
-      return [previousToSelectedClass, selectedClass, nextToSelectedClass];
+      return [previousToSelectedLesson, selectedLesson, nextToSelectedLesson];
     }, [
-      previousToSelectedModule,
-      selectedModule,
-      nextToSelectedModule,
-      selectedClassId,
+      previousToSelectedChapter,
+      selectedChapter,
+      nextToSelectedChapter,
+      selectedLessonId,
     ]);
 
   useEffect(() => {
@@ -71,13 +73,13 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const moduleId = modules[0]?.id;
-    setOpenedModuleId(moduleId);
-    setSelectedClassModuleId(moduleId);
-    setSelectedClassId(
-      modules.find((module) => module.id === moduleId)?.classes?.[0]?.id
+    const chapterId = chapters[0]?.id;
+    setOpenedChapterId(chapterId);
+    setSelectedChapterId(chapterId);
+    setSelectedLessonId(
+      chapters.find((chapter) => chapter.id === chapterId)?.lessons?.[0]?.id
     );
-  }, [modules]);
+  }, [chapters]);
 
   if (isNavBarOpened === undefined) {
     return <LoadingScreen />;
@@ -86,26 +88,26 @@ const Home: NextPage = () => {
   return (
     <div className="fixed inset-0 flex">
       <NavBar
-        modules={modules}
+        chapters={chapters}
         isOpened={isNavBarOpened}
         onToggle={() => setIsNavBarOpened((state) => !state)}
-        openedModuleId={openedModuleId}
-        selectedClassId={selectedClassId}
-        onModuleClick={(moduleId) => {
-          if (moduleId === openedModuleId) {
-            setOpenedModuleId(undefined);
+        openedChapterId={openedChapterId}
+        selectedLessonId={selectedLessonId}
+        onChapterClick={(chapterId) => {
+          if (chapterId === openedChapterId) {
+            setOpenedChapterId(undefined);
             return null;
           }
-          setOpenedModuleId(moduleId);
+          setOpenedChapterId(chapterId);
 
           return null;
         }}
-        onClassClick={(moduleId, classId) => {
+        onLessonClick={(chapterId, lessonId) => {
           if (window.innerWidth < 640) {
             setIsNavBarOpened(false);
           }
-          setSelectedClassModuleId(moduleId);
-          setSelectedClassId(classId);
+          setSelectedChapterId(chapterId);
+          setSelectedLessonId(lessonId);
         }}
       />
       <div className="flex h-full w-full flex-col">
@@ -122,44 +124,42 @@ const Home: NextPage = () => {
             {sessionData?.user?.name?.at(0)}
           </div>
         </div>
-        {selectedClass && (
+        {selectedLesson && (
           <div className="flex flex-col overflow-auto">
             <div className="flex flex-col bg-zinc-900 text-white">
               <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-b border-b-zinc-700 text-lg">
                 <div
                   onClick={() => {
-                    if (previousToSelectedClass) {
-                      setSelectedClassModuleId(
-                        previousToSelectedClass.moduleId
-                      );
-                      setSelectedClassId(previousToSelectedClass.id);
+                    if (previousToSelectedLesson) {
+                      setSelectedChapterId(previousToSelectedLesson.chapterId);
+                      setSelectedLessonId(previousToSelectedLesson.id);
                     }
                   }}
                   className="min-h-40 group relative flex cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-start"
                 >
                   <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
-                    {previousToSelectedClass && (
+                    {previousToSelectedLesson && (
                       <AiOutlineLeftCircle className="transition-none" />
                     )}
                   </div>
                   <div className="z-10 text-center sm:text-left">
-                    {previousToSelectedClass?.name}
+                    {previousToSelectedLesson?.name}
                   </div>
                 </div>
                 <div
                   onClick={() => {
-                    if (nextToSelectedClass) {
-                      setSelectedClassModuleId(nextToSelectedClass.moduleId);
-                      setSelectedClassId(nextToSelectedClass.id);
+                    if (nextToSelectedLesson) {
+                      setSelectedChapterId(nextToSelectedLesson.chapterId);
+                      setSelectedLessonId(nextToSelectedLesson.id);
                     }
                   }}
                   className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-end"
                 >
                   <div className="z-10 text-center sm:text-right">
-                    {nextToSelectedClass?.name}
+                    {nextToSelectedLesson?.name}
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
-                    {nextToSelectedClass && (
+                    {nextToSelectedLesson && (
                       <AiOutlineRightCircle className="transition-none" />
                     )}
                   </div>
@@ -167,20 +167,20 @@ const Home: NextPage = () => {
               </div>
               <div className="aspect-video w-full max-w-2xl p-6">
                 <ReactPlayer
-                  key={`video-${selectedClass.id}`}
+                  key={`video-${selectedLesson.id}`}
                   width={"100%"}
                   height={"100%"}
                   controls
-                  url={selectedClass.video}
+                  url={selectedLesson.video}
                 />
               </div>
               <div className="mx-6 flex pb-12 text-2xl">
                 <div className="border border-zinc-700 px-4 py-2">
-                  {selectedClass.name}
+                  {selectedLesson.name}
                 </div>
               </div>
             </div>
-            <div className="max-w-4xl p-6">{selectedClass.html}</div>
+            <div className="max-w-4xl p-6">{selectedLesson.html}</div>
           </div>
         )}
       </div>
