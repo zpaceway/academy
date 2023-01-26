@@ -6,15 +6,14 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import ReactPlayer from "react-player";
 import LoadingScreen from "../components/LoadingScreen";
 import NavBar from "../components/NavBar";
-import { chapters as mockedChapters } from "../mock";
+import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const { data: chapters = [] } = api.chapters.getChapters.useQuery();
   const [openedChapterId, setOpenedChapterId] = useState<string>();
   const [selectedLessonId, setSelectedLessonId] = useState<string>();
   const [selectedChapterId, setSelectedChapterId] = useState<string>();
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
-  const [chapters, setChapters] = useState(mockedChapters);
 
   const { data: sessionData } = useSession();
 

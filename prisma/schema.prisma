@@ -58,11 +58,18 @@ model VerificationToken {
     @@map("tokens")
 }
 
-type Lesson {
-    name      String
-    video     String
-    html      String
-    chapterId String @db.ObjectId
+model Lesson {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    video       String
+    html        String
+    chapterId   String   @db.ObjectId
+    chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+    likedBy     String[] @db.ObjectId
+    completedBy String[] @db.ObjectId
+    savedBy     String[] @db.ObjectId
+
+    @@map("lessons")
 }
 
 model Chapter {

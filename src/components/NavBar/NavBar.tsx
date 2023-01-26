@@ -1,12 +1,14 @@
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineSearch } from "react-icons/md";
-import type { IChapterUser } from "../../interfaces/IChapter";
 import NavInlineChapter from "./NavInlineChapter";
 import "react-circular-progressbar/dist/styles.css";
+import type { Chapter, Lesson } from "@prisma/client";
 
 interface Props {
-  chapters: IChapterUser[];
+  chapters: (Chapter & {
+    lessons: Lesson[];
+  })[];
   isOpened: boolean;
   onToggle: () => void;
   openedChapterId?: string;

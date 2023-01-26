@@ -1,9 +1,11 @@
+import type { Chapter, Lesson } from "@prisma/client";
 import { AiFillCheckCircle, AiOutlineFolderAdd } from "react-icons/ai";
-import type { IChapterUser } from "../../interfaces/IChapter";
 
 interface Props {
   index: number;
-  chapter: IChapterUser;
+  chapter: Chapter & {
+    lessons: Lesson[];
+  };
   opened: boolean;
   selectedLessonId?: string;
   onChapterClick: () => void;
