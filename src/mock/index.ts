@@ -1,6 +1,4 @@
-import type { IChapterUser } from "../interfaces/IChapter";
-
-const chapters: IChapterUser[] = [
+const chapters = [
   {
     id: "1",
     name: "Introduction",
