@@ -37,13 +37,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(auto()) @map("_id") @db.ObjectId
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id               String            @id @default(auto()) @map("_id") @db.ObjectId
+    name             String?
+    email            String?           @unique
+    emailVerified    DateTime?
+    image            String?
+    accounts         Account[]
+    sessions         Session[]
+    lessonsLiked     LessonLiked[]
+    lessonsCompleted LessonCompleted[]
+    lessonsSaved     LessonSaved[]
+    lessonsRated     LessonRated[]
 
     @@map("users")
 }
@@ -59,17 +63,59 @@ model VerificationToken {
 }
 
 model Lesson {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    id          String            @id @default(auto()) @map("_id") @db.ObjectId
     name        String
     video       String
     html        String
-    chapterId   String   @db.ObjectId
-    chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-    likedBy     String[] @db.ObjectId
-    completedBy String[] @db.ObjectId
-    savedBy     String[] @db.ObjectId
+    chapterId   String            @db.ObjectId
+    chapter     Chapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+    likedBy     LessonLiked[]
+    completedBy LessonCompleted[]
+    savedBy     LessonSaved[]
+    ratedBy     LessonRated[]
 
     @@map("lessons")
+}
+
+model LessonLiked {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    lessonId String @db.ObjectId
+    userId   String @db.ObjectId
+    lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("lessons_liked")
+}
+
+model LessonCompleted {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    lessonId String @db.ObjectId
+    userId   String @db.ObjectId
+    lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("lessons_completed")
+}
+
+model LessonSaved {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    lessonId String @db.ObjectId
+    userId   String @db.ObjectId
+    lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("lessons_saved")
+}
+
+model LessonRated {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    lessonId String @db.ObjectId
+    userId   String @db.ObjectId
+    rate     Int
+    lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("lessons_rated")
 }
 
 model Chapter {

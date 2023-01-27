@@ -3,12 +3,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineSearch } from "react-icons/md";
 import NavInlineChapter from "./NavInlineChapter";
 import "react-circular-progressbar/dist/styles.css";
-import type { Chapter, Lesson } from "@prisma/client";
+import type ILessonsMetadata from "../../interfaces/ILessonsMetadata";
+import type IChapter from "../../interfaces/IChapter";
 
 interface Props {
-  chapters: (Chapter & {
-    lessons: Lesson[];
-  })[];
+  chapters: IChapter[];
   isOpened: boolean;
   onToggle: () => void;
   openedChapterId?: string;

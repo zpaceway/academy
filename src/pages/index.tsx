@@ -1,19 +1,16 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AiOutlineLeftCircle, AiOutlineRightCircle } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 import ReactPlayer from "react-player";
 import LoadingScreen from "../components/LoadingScreen";
 import NavBar from "../components/NavBar";
-import { api } from "../utils/api";
+import ChaptersContext from "../context/ChaptersContext";
 
 const Home: NextPage = () => {
-  const chaptersResponse = api.chapters.getChapters.useQuery();
-  const chapters = useMemo(
-    () => chaptersResponse.data || [],
-    [chaptersResponse.data]
-  );
+  const { data: chapters } = useContext(ChaptersContext);
+
   const [openedChapterId, setOpenedChapterId] = useState<string>();
   const [selectedLessonId, setSelectedLessonId] = useState<string>();
   const [selectedChapterId, setSelectedChapterId] = useState<string>();
@@ -84,7 +81,7 @@ const Home: NextPage = () => {
     );
   }, [chapters]);
 
-  if (isNavBarOpened === undefined || !chaptersResponse.data) {
+  if (isNavBarOpened === undefined) {
     return <LoadingScreen />;
   }
 
