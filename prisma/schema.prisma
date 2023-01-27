@@ -63,17 +63,17 @@ model VerificationToken {
 }
 
 model Lesson {
-    id           String            @id @default(auto()) @map("_id") @db.ObjectId
-    name         String
-    video        String
-    html         String
-    chapterId    String            @db.ObjectId
-    published_at DateTime?
-    chapter      Chapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-    likedBy      LessonLiked[]
-    completedBy  LessonCompleted[]
-    savedBy      LessonSaved[]
-    ratedBy      LessonRated[]
+    id          String            @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    video       String
+    html        String
+    chapterId   String            @db.ObjectId
+    publishedAt DateTime?         @map("published_at")
+    chapter     Chapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+    likedBy     LessonLiked[]
+    completedBy LessonCompleted[]
+    savedBy     LessonSaved[]
+    ratedBy     LessonRated[]
 
     @@map("lessons")
 }

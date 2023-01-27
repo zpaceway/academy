@@ -6,7 +6,7 @@ export const chaptersRouter = createTRPCRouter({
       include: {
         lessons: {
           where: {
-            published_at: {
+            publishedAt: {
               not: null,
             },
           },
