@@ -11,6 +11,7 @@ import AdminNavBar from "../../components/Admin/AdminNavBar";
 import { AiOutlineLink } from "react-icons/ai";
 import { apiAjax } from "../../utils/api";
 import { GiHamburgerMenu } from "react-icons/gi";
+import AdminButton from "../../components/Admin/AdminButton";
 
 interface ChapterReducerAction {
   type: "SET" | "UPDATE" | "ADD" | "DELETE";
@@ -63,6 +64,7 @@ const chaptersReducer = (state: IChapter[], action: ChapterReducerAction) => {
 
 const AdminPage = () => {
   const [isAdminNavBarOpened, setIsAdminNavBarOpened] = useState<boolean>();
+  const [isSaving, setIsSaving] = useState(false);
   const { data: sessionData } = useSession();
   const { data: chaptersData, refetch: refetchChapters } =
     useContext(ChaptersContext);
@@ -106,43 +108,42 @@ const AdminPage = () => {
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
             {!isAdminNavBarOpened && (
-              <div
-                className="flex aspect-square h-14 w-14 cursor-pointer items-center justify-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+              <AdminButton
                 onClick={() => setIsAdminNavBarOpened((state) => !state)}
               >
-                <div>
-                  <GiHamburgerMenu />
-                </div>
-              </div>
+                <GiHamburgerMenu />
+              </AdminButton>
             )}
-            <div
-              className="flex h-14 cursor-pointer items-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+
+            <AdminButton
               onClick={() => {
                 dispatchChapters({ type: "ADD" });
               }}
             >
-              <div>Add Chapter</div>
-            </div>
-            <div
-              className="flex h-14 cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+              <div>+ Chapter</div>
+            </AdminButton>
+            <AdminButton
+              loading={isSaving}
               onClick={() => {
+                setIsSaving(true);
                 apiAjax.chapters.updateAndCreateChapters
                   .mutate({ chapters })
                   .then(refetchChapters)
-                  .catch(console.error);
+                  .catch(console.error)
+                  .finally(() => setIsSaving(false));
               }}
             >
               <div>Save</div>
-            </div>
-            <div
-              className="flex h-14 cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+            </AdminButton>
+
+            <AdminButton
               onClick={() => {
                 router.push("/").catch(console.error);
               }}
             >
               <div>Visit site</div>
               <AiOutlineLink />
-            </div>
+            </AdminButton>
           </div>
           <div className="flex">
             <DndProvider backend={HTML5Backend}>

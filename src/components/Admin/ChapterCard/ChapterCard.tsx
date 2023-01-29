@@ -111,7 +111,7 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
               onChange(chapter);
             }}
           >
-            + lesson
+            + Lesson
           </div>
         </div>
       </div>
