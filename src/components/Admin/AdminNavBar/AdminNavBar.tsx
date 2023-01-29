@@ -39,9 +39,8 @@ const AdminNavBar = ({ isOpened, onToggle }: Props) => {
       }`}
     >
       <div onClick={onToggle} className="flex cursor-pointer">
-        <div className="flex aspect-square h-full items-center justify-center border border-zinc-700 p-4">
+        <div className="flex aspect-square h-14 w-14 items-center justify-center border border-zinc-700 p-4">
           <GiHamburgerMenu />
-          <div className="w-0 opacity-0">Menu</div>
         </div>
       </div>
       <div className="flex flex-col gap-2">

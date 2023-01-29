@@ -107,7 +107,7 @@ const AdminPage = () => {
           <div className="flex flex-wrap gap-2">
             {!isAdminNavBarOpened && (
               <div
-                className="flex aspect-square h-full cursor-pointer items-center justify-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+                className="flex aspect-square h-14 w-14 cursor-pointer items-center justify-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
                 onClick={() => setIsAdminNavBarOpened((state) => !state)}
               >
                 <div>
@@ -116,7 +116,7 @@ const AdminPage = () => {
               </div>
             )}
             <div
-              className="flex cursor-pointer items-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+              className="flex h-14 cursor-pointer items-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
               onClick={() => {
                 dispatchChapters({ type: "ADD" });
               }}
@@ -124,7 +124,7 @@ const AdminPage = () => {
               <div>Add Chapter</div>
             </div>
             <div
-              className="flex cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+              className="flex h-14 cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
               onClick={() => {
                 apiAjax.chapters.updateAndCreateChapters
                   .mutate({ chapters })
@@ -135,7 +135,7 @@ const AdminPage = () => {
               <div>Save</div>
             </div>
             <div
-              className="flex cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+              className="flex h-14 cursor-pointer items-center gap-1 border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
               onClick={() => {
                 router.push("/").catch(console.error);
               }}
