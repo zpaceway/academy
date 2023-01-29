@@ -36,12 +36,19 @@ model Session {
     @@map("sessions")
 }
 
+enum Role {
+    STUDENT
+    ADMIN
+}
+
 model User {
-    id               String            @id @default(auto()) @map("_id") @db.ObjectId
-    name             String?
-    email            String?           @unique
-    emailVerified    DateTime?
-    image            String?
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+
+    role             Role              @default(STUDENT)
     accounts         Account[]
     sessions         Session[]
     lessonsLiked     LessonLiked[]
@@ -68,13 +75,17 @@ model Lesson {
     video       String
     html        String
     chapterId   String            @db.ObjectId
-    publishedAt DateTime?         @map("published_at")
+    isDraft     Boolean
+    order       Int               @default(0)
     chapter     Chapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
     likedBy     LessonLiked[]
     completedBy LessonCompleted[]
     savedBy     LessonSaved[]
     ratedBy     LessonRated[]
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
 
+    @@unique([name, chapterId])
     @@map("lessons")
 }
 
@@ -85,6 +96,7 @@ model LessonLiked {
     lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
     user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@unique([userId, lessonId])
     @@map("lessons_liked")
 }
 
@@ -95,6 +107,7 @@ model LessonCompleted {
     lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
     user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@unique([userId, lessonId])
     @@map("lessons_completed")
 }
 
@@ -105,6 +118,7 @@ model LessonSaved {
     lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
     user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@unique([userId, lessonId])
     @@map("lessons_saved")
 }
 
@@ -116,13 +130,18 @@ model LessonRated {
     lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
     user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@unique([userId, lessonId])
     @@map("lessons_rated")
 }
 
 model Chapter {
-    id      String   @id @default(auto()) @map("_id") @db.ObjectId
-    name    String
-    lessons Lesson[]
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    order     Int      @default(0)
+    lessons   Lesson[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
+    @@unique([name])
     @@map("chapters")
 }

@@ -10,7 +10,7 @@ export const lessonsRouter = createTRPCRouter({
   }),
 
   likeLesson: protectedProcedure
-    .input(z.object({ lessonId: z.string().min(1) }))
+    .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const prismaClient = ctx.prisma;
@@ -24,12 +24,17 @@ export const lessonsRouter = createTRPCRouter({
     }),
 
   dislikeLesson: protectedProcedure
-    .input(z.object({ lessonId: z.string().min(1) }))
+    .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const prismaClient = ctx.prisma;
-      await prismaClient.lessonLiked.deleteMany({
-        where: { userId, lessonId: input.lessonId },
+      await prismaClient.lessonLiked.delete({
+        where: {
+          userId_lessonId: {
+            userId,
+            lessonId: input.lessonId,
+          },
+        },
       });
 
       return {
@@ -38,7 +43,7 @@ export const lessonsRouter = createTRPCRouter({
     }),
 
   markLessonAsCompleted: protectedProcedure
-    .input(z.object({ lessonId: z.string().min(1) }))
+    .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const prismaClient = ctx.prisma;
@@ -52,12 +57,17 @@ export const lessonsRouter = createTRPCRouter({
     }),
 
   markLessonAsIncompleted: protectedProcedure
-    .input(z.object({ lessonId: z.string().min(1) }))
+    .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const prismaClient = ctx.prisma;
-      await prismaClient.lessonCompleted.deleteMany({
-        where: { userId, lessonId: input.lessonId },
+      await prismaClient.lessonCompleted.delete({
+        where: {
+          userId_lessonId: {
+            userId,
+            lessonId: input.lessonId,
+          },
+        },
       });
 
       return {

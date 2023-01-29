@@ -81,7 +81,7 @@ const Home: NextPage = () => {
     );
   }, [chapters]);
 
-  if (isNavBarOpened === undefined) {
+  if (isNavBarOpened === undefined || !sessionData?.user) {
     return <LoadingScreen />;
   }
 
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
             />
           </div>
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-500 shadow-md">
-            {sessionData?.user?.name?.at(0)}
+            {sessionData.user.name?.at(0)}
           </div>
         </div>
         {selectedLesson && (

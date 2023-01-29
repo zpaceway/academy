@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { AiFillCheckCircle, AiOutlineFolderAdd } from "react-icons/ai";
+import { AiOutlineFolderAdd } from "react-icons/ai";
+import { CgFormatSlash } from "react-icons/cg";
 import LessonsMetadataContext from "../../context/LessonsMetadataContext";
 import type IChapter from "../../interfaces/IChapter";
-import { apiAjax } from "../../utils/api";
 import NavInlineLesson from "./NavInlineLesson";
 
 interface Props {
@@ -39,7 +39,7 @@ const NavInlineChapter = ({
           <div className="flex justify-between">
             <div className="text-sm text-zinc-400">Chapter {index}</div>
             <div
-              className={`text-sm font-bold ${
+              className={`flex items-center text-xs font-bold ${
                 chapter.lessons.filter(
                   (lesson) => !!lessonsMetadata.completed[lesson.id]
                 ).length === chapter.lessons.length
@@ -47,12 +47,15 @@ const NavInlineChapter = ({
                   : "text-gray-400"
               }`}
             >
-              {
-                chapter.lessons.filter(
-                  (lesson) => !!lessonsMetadata.completed[lesson.id]
-                ).length
-              }{" "}
-              / {chapter.lessons.length}
+              <div>
+                {
+                  chapter.lessons.filter(
+                    (lesson) => !!lessonsMetadata.completed[lesson.id]
+                  ).length
+                }
+              </div>
+              <CgFormatSlash className="text-lg" />
+              <div>{chapter.lessons.length}</div>
             </div>
           </div>
           <div className="flex text-base font-light">

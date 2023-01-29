@@ -4,13 +4,17 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
+import type { User } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id;
+        const userDocument = user as User;
+        session.user.id = userDocument.id;
+        session.user.role = userDocument.role;
       }
+
       return session;
     },
   },

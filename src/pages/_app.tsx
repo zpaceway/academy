@@ -16,8 +16,13 @@ interface SessionWrapperProps {
 }
 const SessionWrapper = ({ children }: SessionWrapperProps) => {
   const { data: sessionData, status } = useSession();
-  const chaptersQuery = apiHook.chapters.getChapters.useQuery();
-  const lessonsMetadataQuery = apiHook.lessons.getLessonsMetadata.useQuery();
+  const chaptersQuery = apiHook.chapters.getChapters.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
+  const lessonsMetadataQuery = apiHook.lessons.getLessonsMetadata.useQuery(
+    undefined,
+    { refetchOnWindowFocus: false }
+  );
 
   const chapters = useMemo(
     () => chaptersQuery.data || [],
