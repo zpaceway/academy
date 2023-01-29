@@ -23,6 +23,8 @@
     "react-circular-progressbar": "^2.1.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-dnd-multi-backend": "^8.0.0",
+    "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "react-player": "^2.11.0",

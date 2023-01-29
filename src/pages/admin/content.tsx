@@ -3,7 +3,11 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useReducer, useState } from "react";
 import LoadingScreen from "../../components/LoadingScreen";
 import ChaptersContext from "../../context/ChaptersContext";
-import { DndProvider } from "react-dnd";
+import {
+  DndProvider,
+  TouchTransition,
+  MouseTransition,
+} from "react-dnd-multi-backend";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import type IChapter from "../../interfaces/IChapter";
 import ChapterCard from "../../components/Admin/ChapterCard";
@@ -12,6 +16,24 @@ import { AiOutlineLink } from "react-icons/ai";
 import { apiAjax } from "../../utils/api";
 import { GiHamburgerMenu } from "react-icons/gi";
 import AdminButton from "../../components/Admin/AdminButton";
+import { TouchBackend } from "react-dnd-touch-backend";
+
+const HTML5toTouch = {
+  backends: [
+    {
+      id: "html5",
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      id: "touch",
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 interface ChapterReducerAction {
   type: "SET" | "UPDATE" | "ADD" | "DELETE";
@@ -146,7 +168,7 @@ const AdminPage = () => {
             </AdminButton>
           </div>
           <div className="flex">
-            <DndProvider backend={HTML5Backend}>
+            <DndProvider options={HTML5toTouch}>
               <div className="flex w-auto flex-col gap-4">
                 {chapters.map((chapter, index) => {
                   chapter.order = index;

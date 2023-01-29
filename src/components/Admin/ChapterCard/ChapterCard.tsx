@@ -71,49 +71,58 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
           className="rounded-full border border-zinc-800 bg-zinc-800"
         />
       </div>
-      <div className="flex cursor-pointer select-none items-center gap-2 bg-zinc-800 p-2 text-white">
-        <div ref={ref}>
-          <RxDragHandleDots2 />
-        </div>
-        <div onClick={() => setIsCollapsed((state) => !state)}>
-          {isCollapsed ? <AiFillCaretDown /> : <AiFillCaretUp />}
-        </div>
-        <div className="flex w-full justify-between gap-4">
-          <div className="flex flex-col">
-            <input
-              type="text"
-              value={chapter.name}
-              onChange={(e) => {
-                chapter.name = e.target.value;
-                onChange(chapter);
-              }}
-              className="flex w-full shrink grow bg-transparent outline-none"
-            />
-            <div className="h-0 shrink grow overflow-hidden opacity-0">
-              {chapter.name}
-            </div>
+      <div className="relative bg-zinc-800 p-2">
+        <div className="flex items-center gap-2 text-white">
+          <div className="pointer-events-none">
+            <RxDragHandleDots2 />
           </div>
           <div
-            className="flex shrink-0 grow-0 cursor-pointer border py-1 px-2 text-xs"
-            onClick={() => {
-              setIsCollapsed(false);
-              chapter.lessons.push({
-                id: window.crypto.randomUUID(),
-                name: "",
-                order: 0,
-                chapterId: chapter.id,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                video: "",
-                isDraft: false,
-                html: "",
-              });
-              onChange(chapter);
-            }}
+            className="z-10"
+            onClick={() => setIsCollapsed((state) => !state)}
           >
-            + Lesson
+            {isCollapsed ? <AiFillCaretDown /> : <AiFillCaretUp />}
+          </div>
+          <div className="flex w-full justify-between gap-4">
+            <div className="z-10 flex flex-col">
+              <input
+                type="text"
+                value={chapter.name}
+                onChange={(e) => {
+                  chapter.name = e.target.value;
+                  onChange(chapter);
+                }}
+                className="flex w-full shrink grow bg-transparent outline-none"
+              />
+              <div className="h-0 shrink grow overflow-hidden opacity-0">
+                {chapter.name}
+              </div>
+            </div>
+            <div
+              className="z-10 flex shrink-0 grow-0 cursor-pointer border py-1 px-2 text-xs"
+              onClick={() => {
+                setIsCollapsed(false);
+                chapter.lessons.push({
+                  id: window.crypto.randomUUID(),
+                  name: "",
+                  order: 0,
+                  chapterId: chapter.id,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                  video: "",
+                  isDraft: false,
+                  html: "",
+                });
+                onChange(chapter);
+              }}
+            >
+              + Lesson
+            </div>
           </div>
         </div>
+        <div
+          className="absolute inset-0 z-0 h-full w-full bg-transparent"
+          ref={ref}
+        ></div>
       </div>
       {chapter.lessons.length > 0 && !isCollapsed && (
         <div className="ml-4 flex flex-col gap-1">
