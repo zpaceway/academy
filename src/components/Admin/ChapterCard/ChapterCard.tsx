@@ -89,7 +89,9 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
               }}
               className="flex w-full shrink grow bg-transparent outline-none"
             />
-            <div className="h-0 shrink grow opacity-0">{chapter.name}</div>
+            <div className="h-0 shrink grow overflow-hidden opacity-0">
+              {chapter.name}
+            </div>
           </div>
           <div
             className="flex shrink-0 grow-0 cursor-pointer border py-1 px-2 text-xs"
@@ -134,7 +136,9 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
                         }}
                         className="flex w-full bg-transparent outline-none"
                       />
-                      <div className="h-0 opacity-0">{lesson.name}</div>
+                      <div className="h-0 shrink grow overflow-hidden opacity-0">
+                        {lesson.name}
+                      </div>
                     </div>
                     <div className="absolute -right-1.5 -top-1.5 z-10 flex cursor-pointer text-white">
                       <AiFillCloseCircle
