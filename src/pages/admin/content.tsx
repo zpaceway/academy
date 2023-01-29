@@ -183,19 +183,19 @@ const AdminPage = () => {
                           chapter,
                         });
                       }}
-                      onMove={(hoverIndex, dragIndex) => {
-                        const hoveredChapter = chapters[hoverIndex] as IChapter;
+                      onMove={(dragIndex, dropIndex) => {
+                        const hoveredChapter = chapters[dropIndex] as IChapter;
                         const dragedChapter = chapters[dragIndex] as IChapter;
 
                         if (!hoveredChapter || !dragedChapter) {
-                          return;
+                          return false;
                         }
 
                         const newChapters = chapters.map((chapter, _index) => {
                           if (_index == dragIndex) {
                             return hoveredChapter;
                           }
-                          if (_index == hoverIndex) {
+                          if (_index == dropIndex) {
                             return dragedChapter;
                           }
                           return chapter;
@@ -205,6 +205,8 @@ const AdminPage = () => {
                           type: "SET",
                           chapters: newChapters,
                         });
+
+                        return true;
                       }}
                       onChange={(newChapter) => {
                         dispatchChapters({

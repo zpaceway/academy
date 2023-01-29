@@ -59,7 +59,7 @@ const SignInPage = () => {
   useEffect(() => {
     getProviders()
       .then((providers) => setProviders(providers))
-      .catch((err) => console.log(err));
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -70,8 +70,7 @@ const SignInPage = () => {
             ? router.query.callbackUrl
             : "/"
         )
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .catch(console.error);
     }
   }, [sessionData, router]);
 
