@@ -133,7 +133,7 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
         </div>
       </div>
       {chapter.lessons.length > 0 && !isCollapsed && (
-        <div className="ml-4 flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           <div className="my-4 flex flex-col gap-1">
             {chapter.lessons.map((lesson, index) => {
               lesson.order = index;

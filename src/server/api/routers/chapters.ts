@@ -78,7 +78,7 @@ export const chaptersRouter = createTRPCRouter({
               order: chapter.order,
             },
           })
-          .then(() => {
+          .then(() =>
             Promise.all(
               chapter.lessons.map((lesson) =>
                 ctx.prisma.lesson
@@ -90,9 +90,6 @@ export const chaptersRouter = createTRPCRouter({
                       name: lesson.name,
                       order: lesson.order,
                       chapterId: chapter.id,
-                      video: "",
-                      isDraft: false,
-                      html: "",
                     },
                   })
                   .catch(() =>
@@ -108,8 +105,8 @@ export const chaptersRouter = createTRPCRouter({
                     })
                   )
               )
-            ).catch(console.error);
-          })
+            ).catch(console.error)
+          )
           .catch(() =>
             ctx.prisma.chapter
               .create({
@@ -118,7 +115,7 @@ export const chaptersRouter = createTRPCRouter({
                   order: chapter.order,
                 },
               })
-              .then((_chapter) => {
+              .then((_chapter) =>
                 Promise.all(
                   chapter.lessons.map((lesson) =>
                     ctx.prisma.lesson
@@ -130,9 +127,6 @@ export const chaptersRouter = createTRPCRouter({
                           name: lesson.name,
                           order: lesson.order,
                           chapterId: _chapter.id,
-                          video: "",
-                          isDraft: false,
-                          html: "",
                         },
                       })
                       .catch(() =>
@@ -148,8 +142,8 @@ export const chaptersRouter = createTRPCRouter({
                         })
                       )
                   )
-                ).catch(console.error);
-              })
+                ).catch(console.error)
+              )
           )
       );
 
