@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+
 import Image from "next/image";
 import { useContext, useEffect, useMemo, useState } from "react";
 import {
@@ -16,6 +17,7 @@ import { BiCheckSquare, BiSquareRounded } from "react-icons/bi";
 import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { apiAjax } from "../utils/api";
 import { CgSpinnerTwo } from "react-icons/cg";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const { data: chapters } = useContext(ChaptersContext);
@@ -29,6 +31,8 @@ const Home: NextPage = () => {
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
   const [isUserMenuOpened, setIsUserMenuOpened] = useState<boolean>(false);
   const [isCompletingLesson, setIsCompletingLesson] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const { data: sessionData } = useSession();
 
@@ -152,6 +156,16 @@ const Home: NextPage = () => {
                 <div className="absolute top-full right-1/2 z-20  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
                   <div className="cursor-pointer py-2">Profile</div>
                   <div className="cursor-pointer py-2">Admin</div>
+                  <div
+                    className="cursor-pointer py-2"
+                    onClick={() => {
+                      signOut()
+                        .then(() => router.push("/").catch(console.error))
+                        .catch(console.error);
+                    }}
+                  >
+                    Sign out
+                  </div>
                 </div>
               )}
             </div>
