@@ -36,6 +36,8 @@ const SessionWrapper = ({ children }: SessionWrapperProps) => {
         saved: {},
         completed: {},
         rated: {},
+        count: 0,
+        progress: 0,
       },
     [lessonsMetadataQuery.data]
   );
