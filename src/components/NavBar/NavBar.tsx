@@ -3,13 +3,15 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineSearch } from "react-icons/md";
 import NavInlineChapter from "./NavInlineChapter";
 import "react-circular-progressbar/dist/styles.css";
-import type ILessonsMetadata from "../../interfaces/ILessonsMetadata";
 import type IChapter from "../../interfaces/IChapter";
 
 interface Props {
   chapters: IChapter[];
   isOpened: boolean;
   onToggle: () => void;
+  progress: number;
+  lessonsCompleted: number;
+  lessonsCount: number;
   openedChapterId?: string;
   selectedLessonId?: string;
   onChapterClick: (chapterId?: string) => void;
@@ -20,12 +22,14 @@ const NavBar = ({
   chapters,
   isOpened,
   onToggle,
+  progress,
+  lessonsCompleted,
+  lessonsCount,
   openedChapterId,
   selectedLessonId,
   onChapterClick,
   onLessonClick,
 }: Props) => {
-  const percentage = 17;
   return (
     <div
       className={`fixed inset-y-0 left-0 z-50 flex h-full w-full min-w-full flex-col divide-y border-r border-zinc-300 bg-white sm:w-[18rem] sm:min-w-[18rem] sm:max-w-[18rem] ${
@@ -41,8 +45,8 @@ const NavBar = ({
       <div className="flex gap-4 p-6">
         <div className="max-w-[4.5rem]">
           <CircularProgressbar
-            value={percentage}
-            text={`${percentage}%`}
+            value={progress}
+            text={`${progress}%`}
             styles={buildStyles({
               pathColor: "#f88",
               textColor: "#f88",
@@ -53,7 +57,9 @@ const NavBar = ({
         </div>
         <div className="flex flex-col text-sm">
           <div className="pb-2 text-base font-light">Zpaceway Academy</div>
-          <div className="text-zinc-400">8 of 44 completed</div>
+          <div className="text-zinc-400">
+            {lessonsCompleted} of {lessonsCount} completed
+          </div>
           <div className="text-orange-600">See my progress</div>
         </div>
       </div>

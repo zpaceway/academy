@@ -111,14 +111,21 @@ async function generateLessonsMetadata(
       userId: userId,
     },
   });
+  const lessonsCountPromise = prismaClient.lesson.count();
 
-  const [lessonsLiked, lessonsCompleted, lessonsSaved, lessonsRated] =
-    await Promise.all([
-      lessonsLikedPromise,
-      lessonsCompletedPromise,
-      lessonsSavedPromise,
-      lessonsRatedPromise,
-    ]);
+  const [
+    lessonsLiked,
+    lessonsCompleted,
+    lessonsSaved,
+    lessonsRated,
+    lessonsCount,
+  ] = await Promise.all([
+    lessonsLikedPromise,
+    lessonsCompletedPromise,
+    lessonsSavedPromise,
+    lessonsRatedPromise,
+    lessonsCountPromise,
+  ]);
 
   lessonsLiked.forEach((lessonLiked) => {
     lessonsLikedMappedById[lessonLiked.lessonId] = true;
@@ -138,5 +145,9 @@ async function generateLessonsMetadata(
     completed: lessonsCompletedMappedById,
     saved: lessonsSavedMappedById,
     rated: lessonsRatedMappedById,
+    count: lessonsCount,
+    progress: parseFloat(
+      ((Object.keys(lessonsCompleted).length / lessonsCount) * 100).toFixed(1)
+    ),
   };
 }

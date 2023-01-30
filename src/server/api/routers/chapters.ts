@@ -174,6 +174,34 @@ export const chaptersRouter = createTRPCRouter({
               },
             })
           );
+          promises.push(
+            ctx.prisma.lessonCompleted.deleteMany({
+              where: {
+                lessonId: oldLessonId,
+              },
+            })
+          );
+          promises.push(
+            ctx.prisma.lessonLiked.deleteMany({
+              where: {
+                lessonId: oldLessonId,
+              },
+            })
+          );
+          promises.push(
+            ctx.prisma.lessonRated.deleteMany({
+              where: {
+                lessonId: oldLessonId,
+              },
+            })
+          );
+          promises.push(
+            ctx.prisma.lessonSaved.deleteMany({
+              where: {
+                lessonId: oldLessonId,
+              },
+            })
+          );
         }
       });
 

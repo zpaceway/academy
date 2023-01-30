@@ -109,6 +109,9 @@ const Home: NextPage = () => {
       <NavBar
         chapters={chapters}
         isOpened={isNavBarOpened}
+        progress={lessonsMetadata.progress}
+        lessonsCompleted={Object.keys(lessonsMetadata.completed).length}
+        lessonsCount={lessonsMetadata.count}
         onToggle={() => setIsNavBarOpened((state) => !state)}
         openedChapterId={openedChapterId}
         selectedLessonId={selectedLessonId}
