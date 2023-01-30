@@ -9,6 +9,12 @@ export const lessonsRouter = createTRPCRouter({
     return await generateLessonsMetadata(prismaClient, userId);
   }),
 
+  getLesson: protectedProcedure
+    .input(z.object({ lessonId: z.string().min(24) }))
+    .query(async ({ ctx, input }) =>
+      ctx.prisma.lesson.findUnique({ where: { id: input.lessonId } })
+    ),
+
   likeLesson: protectedProcedure
     .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {

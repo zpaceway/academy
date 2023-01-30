@@ -1,21 +1,21 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useReducer, useState } from "react";
-import LoadingScreen from "../../components/LoadingScreen";
-import ChaptersContext from "../../context/ChaptersContext";
+import LoadingScreen from "../../../components/LoadingScreen";
+import ChaptersContext from "../../../context/ChaptersContext";
 import {
   DndProvider,
   TouchTransition,
   MouseTransition,
 } from "react-dnd-multi-backend";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import type IChapter from "../../interfaces/IChapter";
-import ChapterCard from "../../components/Admin/ChapterCard";
-import AdminNavBar from "../../components/Admin/AdminNavBar";
+import type IChapter from "../../../interfaces/IChapter";
+import ChapterCard from "../../../components/Admin/ChapterCard";
+import AdminNavBar from "../../../components/Admin/AdminNavBar";
 import { AiOutlineLink } from "react-icons/ai";
-import { apiAjax } from "../../utils/api";
+import { apiAjax } from "../../../utils/api";
 import { GiHamburgerMenu } from "react-icons/gi";
-import AdminButton from "../../components/Admin/AdminButton";
+import AdminButton from "../../../components/Admin/AdminButton";
 import { TouchBackend } from "react-dnd-touch-backend";
 
 const HTML5toTouch = {

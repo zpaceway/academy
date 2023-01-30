@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import {
@@ -5,6 +6,7 @@ import {
   AiFillCaretUp,
   AiFillCloseCircle,
 } from "react-icons/ai";
+import { GoPencil } from "react-icons/go";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import type IChapter from "../../../interfaces/IChapter";
 
@@ -26,6 +28,7 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const previousHoveredIndexesRecord = useRef(Array.from({ length: 10 }));
+  const router = useRouter();
 
   const [{ isDragging }, drag] = useDrag({
     type: "Chapter",
@@ -139,6 +142,15 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
                   <div className="relative flex cursor-pointer select-none items-center gap-2 bg-zinc-200 p-2">
                     <div>
                       <RxDragHandleDots2 />
+                    </div>
+                    <div
+                      onClick={() => {
+                        router
+                          .push(`/admin/content/${lesson.id}`)
+                          .catch(console.error);
+                      }}
+                    >
+                      <GoPencil />
                     </div>
                     <div>
                       <input
