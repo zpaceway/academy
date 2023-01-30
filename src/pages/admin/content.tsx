@@ -28,7 +28,7 @@ const HTML5toTouch = {
     {
       id: "touch",
       backend: TouchBackend,
-      options: { enableMouseEvents: true },
+      options: { enableMouseEvents: true, delay: 200 },
       preview: true,
       transition: TouchTransition,
     },
@@ -184,22 +184,23 @@ const AdminPage = () => {
                         });
                       }}
                       onMove={(dragIndex, dropIndex) => {
-                        const hoveredChapter = chapters[dropIndex] as IChapter;
-                        const dragedChapter = chapters[dragIndex] as IChapter;
-
-                        if (!hoveredChapter || !dragedChapter) {
+                        const dragedChapter = chapters[dragIndex];
+                        if (!dragedChapter) {
                           return false;
                         }
 
-                        const newChapters = chapters.map((chapter, _index) => {
-                          if (_index == dragIndex) {
-                            return hoveredChapter;
-                          }
-                          if (_index == dropIndex) {
-                            return dragedChapter;
-                          }
-                          return chapter;
-                        });
+                        const chaptersFiltered = chapters.filter(
+                          (_, _index) => _index !== dragIndex
+                        );
+
+                        const prevPart = chaptersFiltered.slice(0, dropIndex);
+                        const postPart = chaptersFiltered.slice(dropIndex);
+
+                        const newChapters = [
+                          ...prevPart,
+                          dragedChapter,
+                          ...postPart,
+                        ];
 
                         dispatchChapters({
                           type: "SET",
