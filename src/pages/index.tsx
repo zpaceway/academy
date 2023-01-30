@@ -175,9 +175,9 @@ const Home: NextPage = () => {
                       setSelectedLessonId(lessonId);
                     }
                   }}
-                  className="min-h-40 group relative flex cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-start"
+                  className="min-h-40 group relative flex cursor-pointer items-center justify-center gap-4 p-6 hover:bg-zinc-800 sm:justify-start"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
+                  <div className="absolute inset-0 flex items-center justify-center text-6xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
                     {previousToSelectedLesson && (
                       <AiOutlineLeftCircle className="transition-none" />
                     )}
@@ -199,12 +199,12 @@ const Home: NextPage = () => {
                       setSelectedLessonId(lessonId);
                     }
                   }}
-                  className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-8 hover:bg-zinc-800 sm:justify-end"
+                  className="group relative flex min-h-[8rem] cursor-pointer items-center justify-center gap-4 p-6 hover:bg-zinc-800 sm:justify-end"
                 >
                   <div className="z-10 text-center sm:text-right">
                     {nextToSelectedLesson?.name}
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center text-8xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
+                  <div className="absolute inset-0 flex items-center justify-center text-6xl text-zinc-800 group-hover:text-zinc-900 group-hover:transition-none sm:static sm:block sm:text-4xl sm:text-orange-700 group-hover:sm:text-orange-700">
                     {nextToSelectedLesson && (
                       <AiOutlineRightCircle className="transition-none" />
                     )}
