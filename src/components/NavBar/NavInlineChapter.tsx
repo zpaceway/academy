@@ -37,7 +37,7 @@ const NavInlineChapter = ({
     >
       <div
         className={`flex cursor-pointer justify-between gap-4 rounded-tl-md border-l-8 px-4 py-6 ${
-          opened ? "border-l-orange-600" : "border-l-transparent"
+          opened ? "border-l-orange-600 bg-orange-100" : "border-l-transparent"
         }`}
         onClick={onChapterClick}
       >

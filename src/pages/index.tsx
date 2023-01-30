@@ -140,6 +140,12 @@ const Home: NextPage = () => {
             />
           </div>
           <div className="flex items-center gap-2 text-sm font-normal">
+            <div
+              onClick={() => setIsUserMenuOpened((state) => !state)}
+              className="cursor-pointer border-b-4 border-orange-700"
+            >
+              {sessionData.user.name?.split(" ")[0]}
+            </div>
             <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 shadow-md">
               {sessionData.user.image ? (
                 <Image
@@ -178,12 +184,6 @@ const Home: NextPage = () => {
                   </div>
                 </div>
               )}
-            </div>
-            <div
-              onClick={() => setIsUserMenuOpened((state) => !state)}
-              className="cursor-pointer"
-            >
-              {sessionData.user.name?.split(" ")[0]}
             </div>
           </div>
         </div>

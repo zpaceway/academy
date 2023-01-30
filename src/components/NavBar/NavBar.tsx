@@ -28,7 +28,7 @@ const NavBar = ({
   const percentage = 17;
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-full min-w-full flex-col divide-y overflow-auto border-r border-zinc-300 bg-white sm:w-[18rem] sm:min-w-[18rem] sm:max-w-[18rem] ${
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-full min-w-full flex-col divide-y border-r border-zinc-300 bg-white sm:w-[18rem] sm:min-w-[18rem] sm:max-w-[18rem] ${
         !isOpened ? "-translate-x-[100%] sm:fixed" : "lg:static"
       }`}
     >
@@ -69,7 +69,7 @@ const NavBar = ({
           />
         </div>
       </div>
-      <div className="flex flex-col divide-y">
+      <div className="flex flex-col divide-y overflow-auto">
         {chapters.map((chapter, index) => (
           <NavInlineChapter
             key={`chapter-${chapter.id}`}
