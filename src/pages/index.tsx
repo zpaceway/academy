@@ -155,7 +155,16 @@ const Home: NextPage = () => {
               {isUserMenuOpened && (
                 <div className="absolute top-full right-1/2 z-20  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
                   <div className="cursor-pointer py-2">Profile</div>
-                  <div className="cursor-pointer py-2">Admin</div>
+                  {sessionData.user.role === "ADMIN" && (
+                    <div
+                      className="cursor-pointer py-2"
+                      onClick={() => {
+                        router.push("/admin/content").catch(console.error);
+                      }}
+                    >
+                      Admin
+                    </div>
+                  )}
                   <div
                     className="cursor-pointer py-2"
                     onClick={() => {
@@ -169,7 +178,12 @@ const Home: NextPage = () => {
                 </div>
               )}
             </div>
-            <div>{sessionData.user.name?.split(" ")[0]}</div>
+            <div
+              onClick={() => setIsUserMenuOpened((state) => !state)}
+              className="cursor-pointer"
+            >
+              {sessionData.user.name?.split(" ")[0]}
+            </div>
           </div>
         </div>
         {selectedLesson && (
