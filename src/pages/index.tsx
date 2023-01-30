@@ -18,6 +18,7 @@ import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { apiAjax } from "../utils/api";
 import { CgSpinnerTwo } from "react-icons/cg";
 import { useRouter } from "next/router";
+import { HiFolder } from "react-icons/hi2";
 
 const Home: NextPage = () => {
   const { data: chapters } = useContext(ChaptersContext);
@@ -186,10 +187,16 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        {selectedLesson && (
+        {selectedLesson && selectedChapter && (
           <div className="flex flex-col overflow-auto">
             <div className="flex flex-col bg-zinc-900 text-white">
-              <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-b border-b-zinc-700 text-lg">
+              <div className="flex w-full max-w-2xl gap-2 p-6 text-sm">
+                <div>
+                  <HiFolder className="mt-1 text-orange-600" />
+                </div>
+                <div>{selectedChapter.name}</div>
+              </div>
+              <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-y border-y-zinc-700 text-lg">
                 <div
                   onClick={() => {
                     if (previousToSelectedLesson) {
@@ -253,7 +260,7 @@ const Home: NextPage = () => {
                     </div>
                   )}
                   <div className="flex text-2xl">
-                    <div className="max-w-xl border border-zinc-700 px-4 py-2">
+                    <div className="max-w-2xl border border-zinc-700 px-4 py-2">
                       {selectedLesson.name}
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 import type { Lesson } from "@prisma/client";
-import { useContext, useState } from "react";
-import { AiFillCheckCircle } from "react-icons/ai";
+import { useContext, useEffect, useRef, useState } from "react";
 import { CgSpinnerTwo } from "react-icons/cg";
+import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
 import LessonsMetadataContext from "../../context/LessonsMetadataContext";
 import { apiAjax } from "../../utils/api";
 
@@ -21,13 +21,19 @@ const NavInlineLesson = ({
   const { refetch: refetchLessonsMetadata } = useContext(
     LessonsMetadataContext
   );
+  const ref = useRef<HTMLDivElement>(null);
 
   const [changingCompletedStatus, setChangingCompletedStatus] = useState(false);
 
+  useEffect(() => {
+    selected && ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selected]);
+
   return (
     <div
+      ref={ref}
       className={`flex cursor-pointer gap-2 px-6 py-4 text-base font-light ${
-        selected ? "bg-black bg-opacity-5" : ""
+        selected ? "bg-zinc-200" : ""
       }`}
     >
       <div>
@@ -59,13 +65,14 @@ const NavInlineLesson = ({
               });
           }}
         >
-          {!changingCompletedStatus && (
-            <AiFillCheckCircle
-              className={`${completed ? "text-green-500" : "text-gray-300"}`}
-            />
-          )}
+          {!changingCompletedStatus &&
+            (completed ? (
+              <FaCheckCircle className="text-green-500" />
+            ) : (
+              <FaRegCircle className="text-gray-400" />
+            ))}
           {changingCompletedStatus && (
-            <CgSpinnerTwo className="animate-spin text-gray-300" />
+            <CgSpinnerTwo className="animate-spin text-gray-400" />
           )}
         </div>
       </div>

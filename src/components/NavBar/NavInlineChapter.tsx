@@ -1,8 +1,9 @@
-import { useContext } from "react";
-import { AiOutlineFolderAdd } from "react-icons/ai";
+import { useContext, useEffect, useRef } from "react";
 import { CgFormatSlash } from "react-icons/cg";
 import LessonsMetadataContext from "../../context/LessonsMetadataContext";
 import type IChapter from "../../interfaces/IChapter";
+import { HiFolderMinus } from "react-icons/hi2";
+import { FiFolderPlus } from "react-icons/fi";
 import NavInlineLesson from "./NavInlineLesson";
 
 interface Props {
@@ -22,10 +23,18 @@ const NavInlineChapter = ({
   onChapterClick,
   onLessonClick,
 }: Props) => {
+  const ref = useRef<HTMLDivElement>(null);
   const { data: lessonsMetadata } = useContext(LessonsMetadataContext);
 
+  useEffect(() => {
+    opened && ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [opened]);
+
   return (
-    <div className="flex select-none flex-col">
+    <div
+      className={`flex select-none flex-col ${opened ? "bg-zinc-50" : ""}`}
+      ref={ref}
+    >
       <div
         className={`flex cursor-pointer justify-between gap-4 rounded-tl-md border-l-8 px-4 py-6 ${
           opened ? "border-l-orange-600" : "border-l-transparent"
@@ -33,7 +42,7 @@ const NavInlineChapter = ({
         onClick={onChapterClick}
       >
         <div className="text-2xl text-orange-600">
-          <AiOutlineFolderAdd />
+          {opened ? <HiFolderMinus /> : <FiFolderPlus />}
         </div>
         <div className="flex w-full flex-col justify-between pt-1">
           <div className="flex justify-between">
