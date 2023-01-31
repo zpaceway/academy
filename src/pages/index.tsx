@@ -190,6 +190,7 @@ const Home: NextPage = () => {
               className="flex cursor-pointer flex-col bg-zinc-900 text-white"
               onClick={() => {
                 setOpenedChapterId(selectedChapter.id);
+                setIsNavBarOpened(true);
                 document
                   .querySelector(`#chapter-${selectedChapter.id}`)
                   ?.scrollIntoView({ behavior: "smooth" });
