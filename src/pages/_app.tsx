@@ -19,6 +19,7 @@ const SessionWrapper = ({ children }: SessionWrapperProps) => {
   const chaptersQuery = apiHook.chapters.getChapters.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
+
   const lessonsMetadataQuery = apiHook.lessons.getLessonsMetadata.useQuery(
     undefined,
     { refetchOnWindowFocus: false }
@@ -42,7 +43,11 @@ const SessionWrapper = ({ children }: SessionWrapperProps) => {
     [lessonsMetadataQuery.data]
   );
 
-  if (status === "loading") {
+  if (
+    status === "loading" ||
+    chaptersQuery.isLoading ||
+    lessonsMetadataQuery.isLoading
+  ) {
     return <LoadingScreen />;
   }
 

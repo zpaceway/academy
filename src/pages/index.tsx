@@ -186,7 +186,14 @@ const Home: NextPage = () => {
         </div>
         {selectedLesson && selectedChapter && (
           <div className="flex flex-col overflow-auto">
-            <div className="flex flex-col bg-zinc-900 text-white">
+            <div
+              className="flex cursor-pointer flex-col bg-zinc-900 text-white"
+              onClick={() =>
+                document
+                  .querySelector(`#chapter-${selectedChapter.id}`)
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               <div className="flex w-full max-w-2xl gap-2 p-6 text-sm">
                 <div>
                   <HiFolder className="mt-1 text-orange-600" />

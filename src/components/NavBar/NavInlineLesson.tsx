@@ -33,7 +33,7 @@ const NavInlineLesson = ({
     <div
       ref={ref}
       className={`flex cursor-pointer gap-2 px-6 py-4 text-base font-light ${
-        selected ? "bg-zinc-200" : ""
+        selected ? "bg-zinc-200" : "hover:bg-zinc-100 hover:shadow-md"
       }`}
     >
       <div>

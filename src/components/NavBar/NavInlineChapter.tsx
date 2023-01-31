@@ -32,6 +32,7 @@ const NavInlineChapter = ({
 
   return (
     <div
+      id={`chapter-${chapter.id}`}
       className={`flex select-none flex-col ${opened ? "bg-zinc-50" : ""}`}
       ref={ref}
     >
