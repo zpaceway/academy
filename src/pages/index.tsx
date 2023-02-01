@@ -133,7 +133,7 @@ const Home: NextPage = () => {
         }}
       />
       <div className="flex h-full w-full flex-col">
-        <div className="flex h-20 w-full items-center justify-between gap-2 bg-orange-600 px-6 text-2xl font-bold text-white">
+        <div className="flex h-24 w-full shrink-0 items-center justify-between gap-2 bg-orange-600 px-6 text-2xl font-bold text-white">
           <div className="flex items-center gap-2">
             <div>
               <GiHamburgerMenu

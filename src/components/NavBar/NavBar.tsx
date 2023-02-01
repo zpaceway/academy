@@ -36,7 +36,7 @@ const NavBar = ({
         !isOpened ? "-translate-x-[100%] sm:fixed" : "lg:static"
       }`}
     >
-      <div className="flex h-20 w-full items-center justify-between bg-orange-600 p-6 text-2xl font-bold text-white">
+      <div className="flex h-24 w-full shrink-0 items-center justify-between bg-orange-600 px-6 text-2xl font-bold text-white">
         <div>ZPACEWAY</div>
         <div onClick={onToggle} className="cursor-pointer">
           <GiHamburgerMenu />
