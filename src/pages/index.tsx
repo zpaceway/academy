@@ -161,7 +161,7 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-between gap-2 overflow-hidden text-xs font-normal">
+          <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-between gap-2 text-xs font-normal">
             <div className="relative flex items-center justify-center rounded-full bg-orange-500 shadow-md">
               {sessionData.user.image ? (
                 <Image
@@ -176,7 +176,7 @@ const Home: NextPage = () => {
                 sessionData.user.name?.at(0)
               )}
               {isUserMenuOpened && (
-                <div className="absolute top-full right-1/2 z-20  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
+                <div className="absolute top-full right-1/2 z-30  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
                   <div className="cursor-pointer py-2">Profile</div>
                   {sessionData.user.role === "ADMIN" && (
                     <div
