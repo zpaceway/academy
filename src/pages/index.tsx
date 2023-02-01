@@ -133,17 +133,36 @@ const Home: NextPage = () => {
         }}
       />
       <div className="flex h-full w-full flex-col">
-        <div className="flex h-20 w-full items-center justify-between bg-orange-600 p-6 text-2xl font-bold text-white">
-          <div>
-            <GiHamburgerMenu
-              onClick={() => setIsNavBarOpened((state) => !state)}
-              className={`cursor-pointer ${
-                isNavBarOpened ? "hidden" : "block"
-              }`}
-            />
+        <div className="flex h-20 w-full items-center justify-between gap-2 bg-orange-600 px-6 text-2xl font-bold text-white">
+          <div className="flex items-center gap-2">
+            <div>
+              <GiHamburgerMenu
+                onClick={() => setIsNavBarOpened((state) => !state)}
+                className={`cursor-pointer ${
+                  isNavBarOpened ? "hidden" : "block"
+                }`}
+              />
+            </div>
+            {selectedChapter && (
+              <div
+                className="cursor-pointer text-sm font-normal"
+                onClick={() => {
+                  setOpenedChapterId(selectedChapter.id);
+                  setIsNavBarOpened(true);
+                  document
+                    .querySelector(`#chapter-${selectedChapter.id}`)
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                {selectedChapter.name.length <= 100
+                  ? selectedChapter.name
+                  : `${selectedChapter.name.substring(0, 100)}...`}
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-2 text-sm font-normal">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 shadow-md">
+
+          <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-between gap-2 overflow-hidden text-xs font-normal">
+            <div className="relative flex items-center justify-center rounded-full bg-orange-500 shadow-md">
               {sessionData.user.image ? (
                 <Image
                   src={sessionData.user.image}
@@ -186,22 +205,7 @@ const Home: NextPage = () => {
         </div>
         {selectedLesson && selectedChapter && (
           <div className="flex flex-col overflow-auto">
-            <div
-              className="flex cursor-pointer flex-col bg-zinc-900 text-white"
-              onClick={() => {
-                setOpenedChapterId(selectedChapter.id);
-                setIsNavBarOpened(true);
-                document
-                  .querySelector(`#chapter-${selectedChapter.id}`)
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <div className="flex w-full max-w-2xl gap-2 p-6 text-sm">
-                <div>
-                  <HiFolder className="mt-1 text-orange-600" />
-                </div>
-                <div>{selectedChapter.name}</div>
-              </div>
+            <div className="flex cursor-pointer flex-col bg-zinc-900 text-white">
               <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-y border-y-zinc-700 text-lg">
                 <div
                   onClick={() => {
