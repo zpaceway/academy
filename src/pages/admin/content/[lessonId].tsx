@@ -161,10 +161,12 @@ const AdminLessonChange = () => {
                     init={{
                       height: 500,
                       menubar: true,
+                      skin: "snow",
+                      icons: "thin",
                       plugins:
-                        "directionality autoresize searchreplace image emoticons advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
+                        "directionality forecolor autoresize searchreplace image emoticons advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
                       toolbar:
-                        "undo redo | styles | bold italic | link image | fontsize | emoticons",
+                        "undo redo | styles | forecolor | bold italic | link image | fontsize | emoticons",
                     }}
                     onEditorChange={onChange}
                   />
