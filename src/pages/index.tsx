@@ -18,7 +18,8 @@ import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { apiAjax } from "../utils/api";
 import { CgSpinnerTwo } from "react-icons/cg";
 import { useRouter } from "next/router";
-import { HiFolder } from "react-icons/hi2";
+import { HiOutlineBell, HiOutlinePaperAirplane } from "react-icons/hi2";
+import { user1, user2 } from "../mock/users";
 
 const Home: NextPage = () => {
   const { data: chapters } = useContext(ChaptersContext);
@@ -161,8 +162,14 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-between gap-2 text-xs font-normal">
-            <div className="relative flex items-center justify-center rounded-full bg-orange-500 shadow-md">
+          <div className="flex  shrink-0 grow-0 flex-row items-center justify-between gap-5 text-xs font-normal">
+            <div>
+              <HiOutlineBell
+                className="h-20 w-10 cursor-pointer"
+                onClick={() => setIsUserMenuOpened((state) => !state)}
+              />
+            </div>
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 shadow-md">
               {sessionData.user.image ? (
                 <Image
                   src={sessionData.user.image}
@@ -337,7 +344,89 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className="max-w-4xl p-6">{selectedLesson.html}</div>
+            <div>
+              <div className="flex flex-row p-4">
+                <div className="flex w-1/2 flex-row">
+                  <div
+                    className="max-w-4xl p-6"
+                    dangerouslySetInnerHTML={{ __html: selectedLesson.html }}
+                  />
+                </div>
+                <div className="flex w-1/2 flex-col p-4">
+                  <div className="max-w-md">
+                    <div className=" text-lg font-bold "> Comments: </div>
+                    <div className="flex flex-col gap-4 ">
+                      <div className="flex flex-row gap-4">
+                        <div className="relative flex h-20 items-start rounded-full ">
+                          <Image
+                            width={300}
+                            height={300}
+                            className="cursor-pointer rounded-full"
+                            src={user2.image}
+                            alt="user2"
+                          />
+                        </div>
+                        <div>
+                          <div className=" text-lg font-bold text-blue-800">
+                            {user2.name}
+                          </div>
+                          <div>{user2.comment}</div>
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-4">
+                        <div className=" relative flex h-20 items-start rounded-full ">
+                          <Image
+                            width={300}
+                            height={300}
+                            alt="user1"
+                            src={user1.image}
+                            className="cursor-pointer rounded-full"
+                          />
+                        </div>
+                        <div>
+                          <div className=" text-lg font-bold text-blue-800">
+                            {user1.name}
+                          </div>
+                          <div>{user1.comment}</div>
+                        </div>
+                      </div>
+                      <div className="align flex flex-row gap-2">
+                        <div className="relative flex  w-40 items-start rounded-full ">
+                          {sessionData.user.image ? (
+                            <Image
+                              src={sessionData.user.image}
+                              width={300}
+                              height={300}
+                              alt="profile-picture"
+                              className="cursor-pointer rounded-full"
+                              onClick={() =>
+                                setIsUserMenuOpened((state) => !state)
+                              }
+                            />
+                          ) : (
+                            sessionData.user.name?.at(0)
+                          )}
+                        </div>
+                        <textarea
+                          className="rounded border p-1 outline-none"
+                          name="comment"
+                          id="comment"
+                          cols={100}
+                          rows={1}
+                          placeholder="Add a comment..."
+                        ></textarea>
+                        <button
+                          className="rounded border bg-zinc-200 p-1 "
+                          type="submit"
+                        >
+                          <HiOutlinePaperAirplane className="h-6 w-6 " />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
