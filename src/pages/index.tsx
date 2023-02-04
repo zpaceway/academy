@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import { useSession, signOut } from "next-auth/react";
 
 import Image from "next/image";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
@@ -34,6 +34,32 @@ const Home: NextPage = () => {
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
   const [isUserMenuOpened, setIsUserMenuOpened] = useState<boolean>(false);
   const [isCompletingLesson, setIsCompletingLesson] = useState<boolean>(false);
+  const [isVideoFloating, setIsVideoFloating] = useState(false);
+
+  const appRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const observingVideo = useRef(false);
+
+  useEffect(() => {
+    if (
+      !videoContainerRef.current ||
+      !appRef.current ||
+      observingVideo.current
+    ) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entry) => {
+        setIsVideoFloating(!entry[0]?.isIntersecting);
+      },
+      {
+        root: appRef.current,
+      }
+    );
+    observer.observe(videoContainerRef.current);
+    observingVideo.current = true;
+  });
 
   const router = useRouter();
 
@@ -107,7 +133,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="fixed inset-0 flex">
+    <div className="fixed inset-0 flex" ref={appRef}>
       <NavBar
         chapters={chapters}
         isOpened={isNavBarOpened}
@@ -267,14 +293,25 @@ const Home: NextPage = () => {
               <div className="flex flex-wrap gap-6 p-6">
                 <div className="flex flex-col gap-6">
                   {selectedLesson.video && (
-                    <div className="aspect-video w-full max-w-2xl">
-                      <ReactPlayer
-                        key={`video-${selectedLesson.id}`}
-                        width={"100%"}
-                        height={"100%"}
-                        controls
-                        url={selectedLesson.video}
-                      />
+                    <div
+                      className="relative aspect-video w-full max-w-2xl"
+                      ref={videoContainerRef}
+                    >
+                      <div
+                        className={`${
+                          isVideoFloating
+                            ? "fixed bottom-4 right-4 z-30"
+                            : "absolute top-0 left-0 right-0 bottom-0"
+                        }`}
+                      >
+                        <ReactPlayer
+                          key={`video-${selectedLesson.id}`}
+                          controls
+                          url={selectedLesson.video}
+                          height={"100%"}
+                          width={"100%"}
+                        />
+                      </div>
                     </div>
                   )}
                   <div className="flex text-2xl">
@@ -350,7 +387,7 @@ const Home: NextPage = () => {
               >
                 {selectedLesson.html && (
                   <div
-                    className={`z-0 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
+                    className={`z-0 flex h-full w-full flex-col p-6 pb-[200px] md:min-w-[500px] ${
                       isNavBarOpened
                         ? "xl:mb border-r-0 border-b xl:border-b-0 xl:border-r"
                         : "lg:mb border-r-0 border-b lg:border-b-0 lg:border-r"
@@ -360,7 +397,7 @@ const Home: NextPage = () => {
                     <LessonHTML html={selectedLesson.html} />
                   </div>
                 )}
-                <div className="z-10 flex h-full max-w-[600px] flex-col p-6">
+                <div className="z-10 flex h-full max-w-[600px] flex-col p-6 pb-[200px]">
                   <div className="pb-8 text-xl text-zinc-500">Comments:</div>
                   <div className="flex flex-col gap-4">
                     {comments.map((comment) => (
