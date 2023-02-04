@@ -344,17 +344,25 @@ const Home: NextPage = () => {
             </div>
             <div>
               <div
-                className={`flex flex-col gap-6 p-6 ${
-                  isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
+                className={`flex w-full flex-col justify-between gap-4 divide-x overflow-x-hidden ${
+                  isNavBarOpened
+                    ? "divide-y xl:flex-row"
+                    : "divide-y lg:flex-row"
                 }`}
               >
                 {selectedLesson.html && (
-                  <div className="flex w-full flex-row">
+                  <div
+                    className={`z-0 flex w-full flex-col p-6 md:min-w-[400px] xl:min-w-[500px] ${
+                      isNavBarOpened ? "-mb-20 xl:mb-0" : "-mb-20 lg:mb-0"
+                    }`}
+                  >
+                    <div className="text-xl text-zinc-500">Content:</div>
                     <LessonHTML html={selectedLesson.html} />
                   </div>
                 )}
-                <div className="flex w-full max-w-[480px] flex-col">
-                  <div className="rounded-lg border p-6">
+                <div className="z-10 w-full">
+                  <div className="flex max-w-[600px] flex-col p-6">
+                    <div className="pb-8 text-xl text-zinc-500">Comments:</div>
                     <div className="flex flex-col gap-4">
                       {comments.map((comment) => (
                         <div
@@ -371,7 +379,7 @@ const Home: NextPage = () => {
                             />
                           </div>
                           <div>
-                            <div className=" text-lg font-bold text-blue-800">
+                            <div className="text-lg font-bold text-blue-800">
                               {comment.user.name}
                             </div>
                             <div>{comment.content}</div>
@@ -394,15 +402,13 @@ const Home: NextPage = () => {
                           )}
                         </div>
                         <textarea
-                          className="rounded border p-1 outline-none"
+                          className="flex w-full rounded border p-1 outline-none"
                           name="comment"
                           id="comment"
-                          cols={100}
-                          rows={1}
                           placeholder="Add a comment..."
                         ></textarea>
                         <button
-                          className="rounded border bg-zinc-200 p-1 "
+                          className="flex aspect-square h-16 w-16 items-center justify-center rounded border bg-zinc-200 p-1 "
                           type="submit"
                         >
                           <HiOutlinePaperAirplane className="h-6 w-6 " />
