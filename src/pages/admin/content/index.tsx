@@ -87,6 +87,7 @@ const chaptersReducer = (state: IChapter[], action: ChapterReducerAction) => {
 const AdminPage = () => {
   const [isAdminNavBarOpened, setIsAdminNavBarOpened] = useState<boolean>();
   const [isSaving, setIsSaving] = useState(false);
+  const [navigatingTo, setNavigatingTo] = useState("");
   const { data: sessionData } = useSession();
   const { data: chaptersData, refetch: refetchChapters } =
     useContext(ChaptersContext);
@@ -126,11 +127,12 @@ const AdminPage = () => {
         onToggle={() => setIsAdminNavBarOpened((state) => !state)}
         isOpened={isAdminNavBarOpened}
       />
-      <div className="flex h-full w-full flex-col overflow-auto bg-white p-4">
+      <div className="flex w-full flex-col overflow-auto bg-white p-4">
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
             {!isAdminNavBarOpened && (
               <AdminButton
+                className="aspect-square"
                 onClick={() => setIsAdminNavBarOpened((state) => !state)}
               >
                 <GiHamburgerMenu />
@@ -160,8 +162,13 @@ const AdminPage = () => {
 
             <AdminButton
               onClick={() => {
-                router.push("/").catch(console.error);
+                setNavigatingTo("/");
+                router
+                  .push("/")
+                  .catch(console.error)
+                  .finally(() => setNavigatingTo(""));
               }}
+              loading={navigatingTo === "/"}
             >
               <div>Visit site</div>
               <AiOutlineLink />

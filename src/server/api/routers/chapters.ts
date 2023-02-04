@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 
 export const chaptersRouter = createTRPCRouter({
@@ -26,7 +26,7 @@ export const chaptersRouter = createTRPCRouter({
     return chapters;
   }),
 
-  updateAndCreateChapters: protectedProcedure
+  updateAndCreateChapters: adminProcedure
     .input(
       z.object({
         chapters: z.array(
