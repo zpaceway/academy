@@ -389,7 +389,7 @@ const Home: NextPage = () => {
               >
                 {selectedLesson.html && (
                   <div
-                    className={`z-0 flex h-full w-full flex-col p-6 pb-[200px] md:min-w-[500px] ${
+                    className={`z-0 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
                       isNavBarOpened
                         ? "xl:mb border-r-0 border-b xl:border-b-0 xl:border-r"
                         : "lg:mb border-r-0 border-b lg:border-b-0 lg:border-r"
