@@ -292,18 +292,20 @@ const Home: NextPage = () => {
               </div>
               <div className="flex flex-wrap gap-6 p-6">
                 <div className="flex flex-col gap-6">
-                  {selectedLesson.video && (
+                  <div
+                    className={`relative aspect-video w-full max-w-2xl ${
+                      selectedLesson.video ? "" : "h-0"
+                    }`}
+                    ref={videoContainerRef}
+                  >
                     <div
-                      className="relative aspect-video w-full max-w-2xl"
-                      ref={videoContainerRef}
+                      className={`${
+                        isVideoFloating
+                          ? "fixed bottom-4 right-4 z-30"
+                          : "absolute top-0 left-0 right-0 bottom-0"
+                      }`}
                     >
-                      <div
-                        className={`${
-                          isVideoFloating
-                            ? "fixed bottom-4 right-4 z-30"
-                            : "absolute top-0 left-0 right-0 bottom-0"
-                        }`}
-                      >
+                      {selectedLesson.video && (
                         <ReactPlayer
                           key={`video-${selectedLesson.id}`}
                           controls
@@ -311,9 +313,9 @@ const Home: NextPage = () => {
                           height={"100%"}
                           width={"100%"}
                         />
-                      </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                   <div className="flex text-2xl">
                     <div className="max-w-2xl border border-zinc-700 px-4 py-2">
                       {selectedLesson.name}
