@@ -293,8 +293,8 @@ const Home: NextPage = () => {
               <div className="flex flex-wrap gap-6 p-6">
                 <div className="flex flex-col gap-6">
                   <div
-                    className={`relative aspect-video w-full max-w-2xl ${
-                      selectedLesson.video ? "" : "h-0"
+                    className={`aspect-video w-full max-w-2xl ${
+                      selectedLesson.video ? "relative" : "fixed h-0"
                     }`}
                     ref={videoContainerRef}
                   >
