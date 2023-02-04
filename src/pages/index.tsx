@@ -18,7 +18,9 @@ import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { apiAjax } from "../utils/api";
 import { CgSpinnerTwo } from "react-icons/cg";
 import { useRouter } from "next/router";
-import { HiFolder } from "react-icons/hi2";
+import { HiOutlineBell, HiOutlinePaperAirplane } from "react-icons/hi2";
+import comments from "../mock/comments";
+import LessonHTML from "../components/LessonHTML";
 
 const Home: NextPage = () => {
   const { data: chapters } = useContext(ChaptersContext);
@@ -161,8 +163,14 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-between gap-2 text-xs font-normal">
-            <div className="relative flex items-center justify-center rounded-full bg-orange-500 shadow-md">
+          <div className="flex shrink-0 grow-0 flex-row items-center justify-between gap-5 text-xs font-normal">
+            <div>
+              <HiOutlineBell
+                className="h-20 w-10 cursor-pointer"
+                onClick={() => setIsUserMenuOpened((state) => !state)}
+              />
+            </div>
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 shadow-md">
               {sessionData.user.image ? (
                 <Image
                   src={sessionData.user.image}
@@ -205,7 +213,7 @@ const Home: NextPage = () => {
         </div>
         {selectedLesson && selectedChapter && (
           <div className="flex flex-col overflow-auto">
-            <div className="flex cursor-pointer flex-col bg-zinc-900 text-white">
+            <div className="flex flex-col bg-zinc-900 text-white">
               <div className="grid w-full select-none grid-cols-2 divide-x divide-zinc-700 border-y border-y-zinc-700 text-lg">
                 <div
                   onClick={() => {
@@ -280,9 +288,6 @@ const Home: NextPage = () => {
                     onClick={() => {
                       setIsCompletingLesson(true);
                       if (lessonsMetadata.completed[selectedLesson.id]) {
-                        console.log(
-                          lessonsMetadata.completed[selectedLesson.id]
-                        );
                         apiAjax.lessons.markLessonAsIncompleted
                           .query({ lessonId: selectedLesson.id })
                           .then(async () => {
@@ -337,7 +342,77 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className="max-w-4xl p-6">{selectedLesson.html}</div>
+            <div>
+              <div
+                className={`flex flex-col ${
+                  isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
+                }`}
+              >
+                {selectedLesson.html && (
+                  <div className="flex w-full flex-row p-6">
+                    <LessonHTML html={selectedLesson.html} />
+                  </div>
+                )}
+                <div className="flex w-full max-w-[480px] flex-col p-6">
+                  <div className="rounded-lg border p-6">
+                    <div className="flex flex-col gap-4">
+                      {comments.map((comment) => (
+                        <div
+                          key={`comment-${comment.id}`}
+                          className="flex flex-row gap-4"
+                        >
+                          <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
+                            <Image
+                              width={300}
+                              height={300}
+                              className="h-10 w-10 cursor-pointer rounded-full"
+                              src={comment.user.image}
+                              alt="comment-user-image"
+                            />
+                          </div>
+                          <div>
+                            <div className=" text-lg font-bold text-blue-800">
+                              {comment.user.name}
+                            </div>
+                            <div>{comment.content}</div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <div className="align flex flex-row gap-2">
+                        <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
+                          {sessionData.user.image ? (
+                            <Image
+                              src={sessionData.user.image}
+                              width={300}
+                              height={300}
+                              alt="profile-picture"
+                              className="cursor-pointer rounded-full"
+                            />
+                          ) : (
+                            sessionData.user.name?.at(0)
+                          )}
+                        </div>
+                        <textarea
+                          className="rounded border p-1 outline-none"
+                          name="comment"
+                          id="comment"
+                          cols={100}
+                          rows={1}
+                          placeholder="Add a comment..."
+                        ></textarea>
+                        <button
+                          className="rounded border bg-zinc-200 p-1 "
+                          type="submit"
+                        >
+                          <HiOutlinePaperAirplane className="h-6 w-6 " />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

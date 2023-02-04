@@ -2,18 +2,20 @@ import { CgSpinnerTwo } from "react-icons/cg";
 
 interface AdminButtonProps {
   children: React.ReactNode;
+  className?: string;
   loading?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const AdminButton = ({
   children,
+  className = "",
   loading = false,
   onClick,
 }: AdminButtonProps) => {
   return (
     <div
-      className="relative flex h-14 cursor-pointer items-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20"
+      className={`relative flex h-14 cursor-pointer items-center justify-center border border-zinc-300 p-4 hover:bg-black hover:bg-opacity-20 ${className}`}
       onClick={onClick}
     >
       <div

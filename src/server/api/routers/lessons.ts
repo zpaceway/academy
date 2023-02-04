@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import lessonChangeFormSchema from "../../../schemas/lessonChangeFormSchema";
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const lessonsRouter = createTRPCRouter({
   getLessonsMetadata: protectedProcedure.query(async ({ ctx }) => {
@@ -79,6 +80,22 @@ export const lessonsRouter = createTRPCRouter({
       return {
         status: "success",
       };
+    }),
+
+  updateLessonContent: adminProcedure
+    .input(lessonChangeFormSchema)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.lesson.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          video: input.video,
+          html: input.html,
+          isDraft: input.isDraft,
+        },
+      });
     }),
 });
 
