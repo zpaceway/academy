@@ -123,7 +123,6 @@ const ChapterCard = ({ chapter, index, onMove, onChange, onDelete }: Props) => {
                 updatedAt: new Date(),
                 video: "",
                 isDraft: false,
-                html: "",
               });
               onChange(chapter);
             }}

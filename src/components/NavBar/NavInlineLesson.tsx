@@ -6,7 +6,7 @@ import LessonsMetadataContext from "../../context/LessonsMetadataContext";
 import { apiAjax } from "../../utils/api";
 
 interface Props {
-  lesson: Lesson;
+  lesson: Omit<Lesson, "html">;
   completed: boolean;
   selected: boolean;
   onLessonClick: (chapterId: string, lessonId: string) => void;
