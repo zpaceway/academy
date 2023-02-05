@@ -203,11 +203,17 @@ const LearningDashboard = ({
       </div>
       <div>
         <div
-          className={`flex h-full w-full flex-col justify-between ${
+          className={`flex h-full w-full flex-col-reverse justify-between ${
             isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
           }`}
         >
-          <div className="z-10 flex h-full w-full max-w-[600px] flex-col p-6">
+          <div
+            className={`z-10 flex h-full w-full max-w-full flex-col p-6 ${
+              isNavBarOpened
+                ? "mb-44 xl:max-w-[600px]"
+                : "mb-44 lg:max-w-[600px]"
+            }`}
+          >
             <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
               <div className="flex max-h-[50vh] flex-col overflow-y-auto">
                 {selectedLesson.comments.map((comment) => (
@@ -290,7 +296,11 @@ const LearningDashboard = ({
             </div>
           </div>
           {selectedLesson.html && (
-            <div className="z-0 mb-[100px] flex h-full w-full flex-col p-6 md:min-w-[500px]">
+            <div
+              className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
+                isNavBarOpened ? "xl:mb-24" : "lg:mb-24"
+              }`}
+            >
               <LessonHTML html={selectedLesson.html} />
             </div>
           )}
