@@ -15,12 +15,11 @@ import comments from "../../mock/comments";
 import Image from "next/image";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
 import { useSession } from "next-auth/react";
-import { FaUserCircle } from "react-icons/fa";
 
 interface Props {
   appRef: RefObject<HTMLDivElement>;
   isNavBarOpened: boolean;
-  selectedLessonId: string;
+  selectedLesson: Omit<Lesson, "html">;
   previousToSelectedLesson?: Omit<Lesson, "html">;
   nextToSelectedLesson?: Omit<Lesson, "html">;
   onPreviousLesson: () => void;
@@ -30,7 +29,7 @@ interface Props {
 const LearningDashboard = ({
   appRef,
   isNavBarOpened,
-  selectedLessonId,
+  selectedLesson,
   previousToSelectedLesson,
   nextToSelectedLesson,
   onPreviousLesson,
@@ -39,9 +38,9 @@ const LearningDashboard = ({
   const { data: lessonsMetadata, refetch: refetchLessonsMetadata } = useContext(
     LessonsMetadataContext
   );
-  const { data: selectedLesson, refetch: refetchGetLesson } =
+  const { data: lesson, refetch: refetchGetLesson } =
     apiHook.lessons.getLesson.useQuery({
-      lessonId: selectedLessonId,
+      lessonId: selectedLesson.id,
     });
   const { data: sessionData } = useSession();
 
@@ -70,14 +69,6 @@ const LearningDashboard = ({
 
     return () => observer.current?.disconnect();
   });
-
-  if (!selectedLesson || !sessionData?.user) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <CgSpinnerTwo className="animate-spin text-4xl text-orange-600" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col overflow-auto">
@@ -201,117 +192,121 @@ const LearningDashboard = ({
           </div>
         </div>
       </div>
-      <div>
-        <div
-          className={`flex h-full w-full flex-col-reverse justify-between ${
-            isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
-          }`}
-        >
+      {lesson && sessionData && sessionData.user ? (
+        <div>
           <div
-            className={`z-10 flex h-full w-full max-w-full flex-col p-6 ${
-              isNavBarOpened
-                ? "mb-44 xl:max-w-[600px]"
-                : "mb-44 lg:max-w-[600px]"
+            className={`flex h-full w-full flex-col-reverse justify-between ${
+              isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
             }`}
           >
-            <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
-              <div className="flex max-h-[50vh] flex-col overflow-y-auto overflow-x-hidden">
-                {selectedLesson.comments.map((comment) => (
-                  <div
-                    key={`comment-${comment.id}`}
-                    className="flex flex-row gap-4"
-                  >
-                    <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
-                      {comment.user.image ? (
-                        <Image
-                          width={300}
-                          height={300}
-                          className="h-10 w-10 rounded-full"
-                          src={comment.user.image || ""}
-                          alt="comment-user-image"
-                        />
-                      ) : (
-                        comment.user.name?.at(0)
-                      )}
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-blue-800">
-                        {comment.user.name}
-                      </div>
-                      <div style={{ wordBreak: "break-word" }}>
-                        {comment.content}
-                      </div>
-                      <div className="mt-2 text-xs text-zinc-500">
-                        {comment.createdAt.toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="align flex flex-row gap-2">
-                <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
-                  {sessionData.user.image ? (
-                    <Image
-                      src={sessionData.user.image}
-                      width={300}
-                      height={300}
-                      alt="profile-picture"
-                      className="cursor-pointer rounded-full"
-                    />
-                  ) : (
-                    sessionData.user.name?.at(0)
-                  )}
-                </div>
-                <textarea
-                  value={commentContent}
-                  onChange={(e) => setCommentContent(e.target.value)}
-                  className="flex w-full rounded border p-1 outline-none"
-                  placeholder="Add a comment..."
-                ></textarea>
-                <button
-                  className="flex aspect-square h-16 w-16 items-center justify-center rounded border bg-zinc-200 p-1 "
-                  onClick={() => {
-                    setIsCreatingComment(true);
-                    apiAjax.lessons.addLessonComment
-                      .mutate({
-                        lessonId: selectedLesson.id,
-                        content: commentContent,
-                      })
-                      .then(() => refetchGetLesson().catch(console.error))
-                      .then(() => {
-                        setCommentContent("");
-                      })
-                      .catch(console.error)
-                      .finally(() => {
-                        setIsCreatingComment(false);
-                      });
-                  }}
-                >
-                  {isCreatingComment ? (
-                    <CgSpinnerTwo className="h-6 w-6 animate-spin" />
-                  ) : (
-                    <HiOutlinePaperAirplane className="h-6 w-6" />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-          {selectedLesson.html && (
             <div
-              className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
-                isNavBarOpened && selectedLesson.video
-                  ? "xl:mb-24"
-                  : selectedLesson.video
-                  ? "lg:mb-24"
-                  : ""
+              className={`z-10 flex h-full w-full max-w-full flex-col p-6 ${
+                isNavBarOpened ? "xl:max-w-[600px]" : "lg:max-w-[600px]"
               }`}
             >
-              <LessonHTML html={selectedLesson.html} />
+              <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
+                <div className="flex max-h-[50vh] flex-col overflow-y-auto overflow-x-hidden">
+                  {lesson.comments.map((comment) => (
+                    <div
+                      key={`comment-${comment.id}`}
+                      className="flex flex-row gap-4"
+                    >
+                      <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
+                        {comment.user.image ? (
+                          <Image
+                            width={300}
+                            height={300}
+                            className="h-10 w-10 rounded-full"
+                            src={comment.user.image || ""}
+                            alt="comment-user-image"
+                          />
+                        ) : (
+                          comment.user.name?.at(0)
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-blue-800">
+                          {comment.user.name}
+                        </div>
+                        <div style={{ wordBreak: "break-word" }}>
+                          {comment.content}
+                        </div>
+                        <div className="mt-2 text-xs text-zinc-500">
+                          {comment.createdAt.toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="align flex flex-row gap-2">
+                  <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
+                    {sessionData.user.image ? (
+                      <Image
+                        src={sessionData.user.image}
+                        width={300}
+                        height={300}
+                        alt="profile-picture"
+                        className="cursor-pointer rounded-full"
+                      />
+                    ) : (
+                      sessionData.user.name?.at(0)
+                    )}
+                  </div>
+                  <textarea
+                    value={commentContent}
+                    onChange={(e) => setCommentContent(e.target.value)}
+                    className="flex w-full rounded border p-1 outline-none"
+                    placeholder="Add a comment..."
+                  ></textarea>
+                  <button
+                    className="flex aspect-square h-16 w-16 items-center justify-center rounded border bg-zinc-200 p-1 "
+                    onClick={() => {
+                      setIsCreatingComment(true);
+                      apiAjax.lessons.addLessonComment
+                        .mutate({
+                          lessonId: selectedLesson.id,
+                          content: commentContent,
+                        })
+                        .then(() => refetchGetLesson().catch(console.error))
+                        .then(() => {
+                          setCommentContent("");
+                        })
+                        .catch(console.error)
+                        .finally(() => {
+                          setIsCreatingComment(false);
+                        });
+                    }}
+                  >
+                    {isCreatingComment ? (
+                      <CgSpinnerTwo className="h-6 w-6 animate-spin" />
+                    ) : (
+                      <HiOutlinePaperAirplane className="h-6 w-6" />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
+            {lesson.html && (
+              <div
+                className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
+                  isNavBarOpened && selectedLesson.video
+                    ? "xl:mb-24"
+                    : selectedLesson.video
+                    ? "lg:mb-24"
+                    : ""
+                }`}
+              >
+                <LessonHTML html={lesson.html} />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex h-40 w-full items-center justify-center">
+          <CgSpinnerTwo className="animate-spin text-4xl text-orange-600" />
+        </div>
+      )}
     </div>
   );
 };

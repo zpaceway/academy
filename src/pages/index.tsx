@@ -205,7 +205,7 @@ const Home: NextPage = () => {
           <LearningDashboard
             appRef={appRef}
             isNavBarOpened={isNavBarOpened}
-            selectedLessonId={selectedLesson.id}
+            selectedLesson={selectedLesson}
             previousToSelectedLesson={previousToSelectedLesson}
             nextToSelectedLesson={nextToSelectedLesson}
             onPreviousLesson={() => {
