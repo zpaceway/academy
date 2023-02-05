@@ -53,6 +53,30 @@ export const lessonsRouter = createTRPCRouter({
       };
     }),
 
+  rateLesson: protectedProcedure
+    .input(
+      z.object({ lessonId: z.string().min(24), rate: z.number().min(1).max(5) })
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const prismaClient = ctx.prisma;
+
+      await prismaClient.lessonRated.upsert({
+        where: {
+          userId_lessonId: {
+            userId,
+            lessonId: input.lessonId,
+          },
+        },
+        update: { userId, lessonId: input.lessonId, rate: input.rate },
+        create: { userId, lessonId: input.lessonId, rate: input.rate },
+      });
+
+      return {
+        status: "success",
+      };
+    }),
+
   dislikeLesson: protectedProcedure
     .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) => {

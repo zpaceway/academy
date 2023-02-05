@@ -1,6 +1,14 @@
 import { type Lesson } from "@prisma/client";
-import { type RefObject, useEffect, useRef, useState, useContext } from "react";
 import {
+  type RefObject,
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
+import {
+  AiFillStar,
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
   AiOutlineStar,
@@ -46,10 +54,26 @@ const LearningDashboard = ({
 
   const [isCompletingLesson, setIsCompletingLesson] = useState<boolean>(false);
   const [isCreatingComment, setIsCreatingComment] = useState(false);
+  const [isRatingLesson, setIsRatingLesson] = useState(false);
   const [isVideoFloating, setIsVideoFloating] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const commentContentRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
+
+  const handleRateLesson = useCallback(
+    (rate: number) => {
+      setIsRatingLesson(true);
+      apiAjax.lessons.rateLesson
+        .query({
+          lessonId: selectedLesson.id,
+          rate,
+        })
+        .then(() => refetchLessonsMetadata())
+        .catch(console.error)
+        .finally(() => setIsRatingLesson(false));
+    },
+    [selectedLesson.id, refetchLessonsMetadata]
+  );
 
   useEffect(() => {
     if (!videoContainerRef.current || !appRef.current) {
@@ -181,12 +205,35 @@ const LearningDashboard = ({
             </div>
             <div className="flex flex-col text-lg">
               <div>Please, rate this lesson</div>
-              <div className="flex gap-1 text-yellow-300">
-                <AiOutlineStar className="cursor-pointer" />
-                <AiOutlineStar className="cursor-pointer" />
-                <AiOutlineStar className="cursor-pointer" />
-                <AiOutlineStar className="cursor-pointer" />
-                <AiOutlineStar className="cursor-pointer" />
+              <div
+                className={`flex gap-1 text-yellow-300 ${
+                  isRatingLesson ? "animate-pulse" : ""
+                }`}
+              >
+                {Array.from({
+                  length: lessonsMetadata.rated[selectedLesson.id] || 0,
+                }).map((_, index) => (
+                  <AiFillStar
+                    key={`rated-${index}`}
+                    className="cursor-pointer"
+                    onClick={() => handleRateLesson(index + 1)}
+                  />
+                ))}
+                {Array.from({
+                  length: 5 - (lessonsMetadata.rated[selectedLesson.id] || 0),
+                }).map((_, index) => (
+                  <AiOutlineStar
+                    key={`not-rated-${index}`}
+                    className="cursor-pointer"
+                    onClick={() =>
+                      handleRateLesson(
+                        index +
+                          1 +
+                          (lessonsMetadata.rated[selectedLesson.id] || 0)
+                      )
+                    }
+                  />
+                ))}
               </div>
             </div>
           </div>
