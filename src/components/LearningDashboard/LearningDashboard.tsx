@@ -46,9 +46,9 @@ const LearningDashboard = ({
 
   const [isCompletingLesson, setIsCompletingLesson] = useState<boolean>(false);
   const [isCreatingComment, setIsCreatingComment] = useState(false);
-  const [commentContent, setCommentContent] = useState("");
   const [isVideoFloating, setIsVideoFloating] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const commentContentRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
 
   useEffect(() => {
@@ -202,10 +202,16 @@ const LearningDashboard = ({
             <div
               className={`z-10 flex h-full w-full max-w-full flex-col p-6 ${
                 isNavBarOpened ? "xl:max-w-[600px]" : "lg:max-w-[600px]"
+              } ${
+                isNavBarOpened && lesson.video
+                  ? "mb-40"
+                  : lesson.video
+                  ? "mb-40"
+                  : ""
               }`}
             >
-              <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
-                <div className="flex max-h-[50vh] flex-col overflow-y-auto overflow-x-hidden">
+              <div className="flex flex-col gap-4 rounded-lg border shadow-md">
+                <div className="flex max-h-[50vh] flex-col overflow-y-auto overflow-x-hidden p-4">
                   {lesson.comments.map((comment) => (
                     <div
                       key={`comment-${comment.id}`}
@@ -228,7 +234,10 @@ const LearningDashboard = ({
                         <div className="text-lg font-bold text-blue-800">
                           {comment.user.name}
                         </div>
-                        <div style={{ wordBreak: "break-word" }}>
+                        <div
+                          className="whitespace-pre-wrap"
+                          style={{ wordBreak: "break-word" }}
+                        >
                           {comment.content}
                         </div>
                         <div className="mt-2 text-xs text-zinc-500">
@@ -239,7 +248,7 @@ const LearningDashboard = ({
                   ))}
                 </div>
 
-                <div className="align flex flex-row gap-2">
+                <div className="align flex flex-row gap-2 border-t p-4">
                   <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
                     {sessionData.user.image ? (
                       <Image
@@ -253,24 +262,26 @@ const LearningDashboard = ({
                       sessionData.user.name?.at(0)
                     )}
                   </div>
-                  <textarea
-                    value={commentContent}
-                    onChange={(e) => setCommentContent(e.target.value)}
-                    className="flex w-full rounded border p-1 outline-none"
+                  <div
+                    ref={commentContentRef}
+                    contentEditable
+                    className="min-h-10 max-h-40 w-full overflow-y-auto whitespace-pre-wrap rounded border p-1 outline-none"
                     placeholder="Add a comment..."
-                  ></textarea>
+                  ></div>
                   <button
-                    className="flex aspect-square h-16 w-16 items-center justify-center rounded border bg-zinc-200 p-1 "
+                    className="flex aspect-square h-10 w-10 items-center justify-center rounded border bg-zinc-200 p-1 "
                     onClick={() => {
                       setIsCreatingComment(true);
                       apiAjax.lessons.addLessonComment
                         .mutate({
                           lessonId: selectedLesson.id,
-                          content: commentContent,
+                          content: commentContentRef.current?.innerText || "",
                         })
                         .then(() => refetchGetLesson().catch(console.error))
                         .then(() => {
-                          setCommentContent("");
+                          if (commentContentRef.current) {
+                            commentContentRef.current.innerText = "";
+                          }
                         })
                         .catch(console.error)
                         .finally(() => {
