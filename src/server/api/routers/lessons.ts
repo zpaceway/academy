@@ -13,8 +13,31 @@ export const lessonsRouter = createTRPCRouter({
   getLesson: protectedProcedure
     .input(z.object({ lessonId: z.string().min(24) }))
     .query(async ({ ctx, input }) =>
-      ctx.prisma.lesson.findUnique({ where: { id: input.lessonId } })
+      ctx.prisma.lesson.findUnique({
+        where: { id: input.lessonId },
+        include: {
+          comments: { include: { user: true }, orderBy: { createdAt: "asc" } },
+        },
+      })
     ),
+
+  addLessonComment: protectedProcedure
+    .input(
+      z.object({ content: z.string().min(1), lessonId: z.string().min(24) })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.lessonComment.create({
+        data: {
+          userId: ctx.session.user.id,
+          lessonId: input.lessonId,
+          content: input.content,
+        },
+      });
+
+      return {
+        status: "success",
+      };
+    }),
 
   likeLesson: protectedProcedure
     .input(z.object({ lessonId: z.string().min(24) }))

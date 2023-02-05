@@ -32,13 +32,13 @@ const NavInlineLesson = ({
   return (
     <div
       ref={ref}
-      className={`flex cursor-pointer gap-2 px-6 py-4 text-base font-light ${
+      className={`flex gap-2 px-6 py-4 text-base font-light ${
         selected ? "bg-zinc-200" : "hover:bg-zinc-100 hover:shadow-md"
       }`}
     >
       <div>
         <div
-          className="block shrink-0 grow-0 text-2xl"
+          className="block shrink-0 grow-0 cursor-pointer text-2xl"
           onClick={() => {
             setChangingCompletedStatus(true);
             if (completed) {
@@ -76,7 +76,10 @@ const NavInlineLesson = ({
           )}
         </div>
       </div>
-      <div onClick={() => onLessonClick(lesson.chapterId, lesson.id)}>
+      <div
+        className="cursor-pointer"
+        onClick={() => onLessonClick(lesson.chapterId, lesson.id)}
+      >
         {lesson.name}
       </div>
     </div>

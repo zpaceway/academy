@@ -55,6 +55,7 @@ model User {
     lessonsCompleted LessonCompleted[]
     lessonsSaved     LessonSaved[]
     lessonsRated     LessonRated[]
+    comments         LessonComment[]
 
     @@map("users")
 }
@@ -82,11 +83,25 @@ model Lesson {
     completedBy LessonCompleted[]
     savedBy     LessonSaved[]
     ratedBy     LessonRated[]
+    comments    LessonComment[]
     createdAt   DateTime          @default(now())
     updatedAt   DateTime          @updatedAt
 
     @@unique([name, chapterId])
     @@map("lessons")
+}
+
+model LessonComment {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    lessonId  String   @db.ObjectId
+    userId    String   @db.ObjectId
+    content   String
+    lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("lessons_comments")
 }
 
 model LessonLiked {

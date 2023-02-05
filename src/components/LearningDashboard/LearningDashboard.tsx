@@ -15,6 +15,7 @@ import comments from "../../mock/comments";
 import Image from "next/image";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
 import { useSession } from "next-auth/react";
+import { FaUserCircle } from "react-icons/fa";
 
 interface Props {
   appRef: RefObject<HTMLDivElement>;
@@ -38,12 +39,15 @@ const LearningDashboard = ({
   const { data: lessonsMetadata, refetch: refetchLessonsMetadata } = useContext(
     LessonsMetadataContext
   );
-  const { data: selectedLesson } = apiHook.lessons.getLesson.useQuery({
-    lessonId: selectedLessonId,
-  });
+  const { data: selectedLesson, refetch: refetchGetLesson } =
+    apiHook.lessons.getLesson.useQuery({
+      lessonId: selectedLessonId,
+    });
   const { data: sessionData } = useSession();
 
   const [isCompletingLesson, setIsCompletingLesson] = useState<boolean>(false);
+  const [isCreatingComment, setIsCreatingComment] = useState(false);
+  const [commentContent, setCommentContent] = useState("");
   const [isVideoFloating, setIsVideoFloating] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
@@ -199,45 +203,43 @@ const LearningDashboard = ({
       </div>
       <div>
         <div
-          className={`flex h-full w-full flex-col justify-between gap-4 ${
+          className={`flex h-full w-full flex-col justify-between ${
             isNavBarOpened ? "xl:flex-row" : "lg:flex-row"
           }`}
         >
-          {selectedLesson.html && (
-            <div
-              className={`z-0 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
-                isNavBarOpened
-                  ? "xl:mb border-r-0 border-b xl:border-b-0 xl:border-r"
-                  : "lg:mb border-r-0 border-b lg:border-b-0 lg:border-r"
-              }`}
-            >
-              <LessonHTML html={selectedLesson.html} />
-            </div>
-          )}
-          <div className="z-10 flex h-full max-w-[600px] flex-col p-6 pb-[200px]">
-            <div className="flex flex-col gap-4">
-              {comments.map((comment) => (
-                <div
-                  key={`comment-${comment.id}`}
-                  className="flex flex-row gap-4"
-                >
-                  <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
-                    <Image
-                      width={300}
-                      height={300}
-                      className="h-10 w-10 cursor-pointer rounded-full"
-                      src={comment.user.image}
-                      alt="comment-user-image"
-                    />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-blue-800">
-                      {comment.user.name}
+          <div className="z-10 flex h-full w-full max-w-[600px] flex-col p-6">
+            <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
+              <div className="flex max-h-[50vh] flex-col overflow-y-auto">
+                {selectedLesson.comments.map((comment) => (
+                  <div
+                    key={`comment-${comment.id}`}
+                    className="flex flex-row gap-4"
+                  >
+                    <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
+                      {comment.user.image ? (
+                        <Image
+                          width={300}
+                          height={300}
+                          className="h-10 w-10 rounded-full"
+                          src={comment.user.image || ""}
+                          alt="comment-user-image"
+                        />
+                      ) : (
+                        comment.user.name?.at(0)
+                      )}
                     </div>
-                    <div>{comment.content}</div>
+                    <div>
+                      <div className="text-lg font-bold text-blue-800">
+                        {comment.user.name}
+                      </div>
+                      <div className="break-all">{comment.content}</div>
+                      <div className="mt-2 text-xs text-zinc-500">
+                        {comment.createdAt.toLocaleString()}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
               <div className="align flex flex-row gap-2">
                 <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
@@ -254,20 +256,44 @@ const LearningDashboard = ({
                   )}
                 </div>
                 <textarea
+                  value={commentContent}
+                  onChange={(e) => setCommentContent(e.target.value)}
                   className="flex w-full rounded border p-1 outline-none"
-                  name="comment"
-                  id="comment"
                   placeholder="Add a comment..."
                 ></textarea>
                 <button
                   className="flex aspect-square h-16 w-16 items-center justify-center rounded border bg-zinc-200 p-1 "
-                  type="submit"
+                  onClick={() => {
+                    setIsCreatingComment(true);
+                    apiAjax.lessons.addLessonComment
+                      .mutate({
+                        lessonId: selectedLesson.id,
+                        content: commentContent,
+                      })
+                      .then(() => refetchGetLesson().catch(console.error))
+                      .then(() => {
+                        setCommentContent("");
+                      })
+                      .catch(console.error)
+                      .finally(() => {
+                        setIsCreatingComment(false);
+                      });
+                  }}
                 >
-                  <HiOutlinePaperAirplane className="h-6 w-6 " />
+                  {isCreatingComment ? (
+                    <CgSpinnerTwo className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <HiOutlinePaperAirplane className="h-6 w-6" />
+                  )}
                 </button>
               </div>
             </div>
           </div>
+          {selectedLesson.html && (
+            <div className="z-0 mb-[100px] flex h-full w-full flex-col p-6 md:min-w-[500px]">
+              <LessonHTML html={selectedLesson.html} />
+            </div>
+          )}
         </div>
       </div>
     </div>
