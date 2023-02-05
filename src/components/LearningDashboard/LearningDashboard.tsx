@@ -47,15 +47,9 @@ const LearningDashboard = ({
   const [isVideoFloating, setIsVideoFloating] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
-  const observingVideo = useRef(false);
 
   useEffect(() => {
-    if (
-      !videoContainerRef.current ||
-      !appRef.current ||
-      observingVideo.current
-    ) {
-      observingVideo.current = false;
+    if (!videoContainerRef.current || !appRef.current) {
       return;
     }
 
