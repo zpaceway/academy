@@ -264,7 +264,7 @@ const LearningDashboard = ({
                       key={`comment-${comment.id}`}
                       className="flex flex-row gap-4"
                     >
-                      <div className="h-10 w-10 shrink-0 grow-0 items-start rounded-full ">
+                      <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-center rounded-full bg-orange-500 text-white">
                         {comment.user.image ? (
                           <Image
                             width={300}
@@ -296,14 +296,14 @@ const LearningDashboard = ({
                 </div>
 
                 <div className="align flex flex-row gap-2 border-t p-4">
-                  <div className="w-10 shrink-0 grow-0 items-start rounded-full ">
+                  <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-center rounded-full bg-orange-500 text-white">
                     {sessionData.user.image ? (
                       <Image
                         src={sessionData.user.image}
                         width={300}
                         height={300}
                         alt="profile-picture"
-                        className="cursor-pointer rounded-full"
+                        className="rounded-full"
                       />
                     ) : (
                       sessionData.user.name?.at(0)

@@ -160,15 +160,17 @@ const Home: NextPage = () => {
                 onClick={() => setIsUserMenuOpened((state) => !state)}
               />
             </div>
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 shadow-md">
+            <div
+              className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-base shadow-md"
+              onClick={() => setIsUserMenuOpened((state) => !state)}
+            >
               {sessionData.user.image ? (
                 <Image
                   src={sessionData.user.image}
                   width={300}
                   height={300}
                   alt="profile-picture"
-                  className="cursor-pointer rounded-full"
-                  onClick={() => setIsUserMenuOpened((state) => !state)}
+                  className="rounded-full"
                 />
               ) : (
                 sessionData.user.name?.at(0)
