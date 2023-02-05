@@ -215,7 +215,7 @@ const LearningDashboard = ({
             }`}
           >
             <div className="flex flex-col gap-4 rounded-lg border p-4 shadow-md">
-              <div className="flex max-h-[50vh] flex-col overflow-y-auto">
+              <div className="flex max-h-[50vh] flex-col overflow-y-auto overflow-x-hidden">
                 {selectedLesson.comments.map((comment) => (
                   <div
                     key={`comment-${comment.id}`}
@@ -238,7 +238,9 @@ const LearningDashboard = ({
                       <div className="text-lg font-bold text-blue-800">
                         {comment.user.name}
                       </div>
-                      <div className="break-all">{comment.content}</div>
+                      <div style={{ wordBreak: "break-word" }}>
+                        {comment.content}
+                      </div>
                       <div className="mt-2 text-xs text-zinc-500">
                         {comment.createdAt.toLocaleString()}
                       </div>
@@ -298,7 +300,11 @@ const LearningDashboard = ({
           {selectedLesson.html && (
             <div
               className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
-                isNavBarOpened ? "xl:mb-24" : "lg:mb-24"
+                isNavBarOpened && selectedLesson.video
+                  ? "xl:mb-24"
+                  : selectedLesson.video
+                  ? "lg:mb-24"
+                  : ""
               }`}
             >
               <LessonHTML html={selectedLesson.html} />
