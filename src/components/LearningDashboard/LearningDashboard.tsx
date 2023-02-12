@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   AiFillStar,
+  AiOutlineCloseCircle,
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
   AiOutlineStar,
@@ -19,10 +20,11 @@ import { apiAjax, apiHook } from "../../utils/api";
 import { BiCheckSquare, BiSquareRounded } from "react-icons/bi";
 import { CgSpinnerTwo } from "react-icons/cg";
 import LessonHTML from "../LessonHTML";
-import comments from "../../mock/comments";
 import Image from "next/image";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
+import { BsChatLeftDotsFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
+import comments from "../../mock/comments";
 
 interface Props {
   appRef: RefObject<HTMLDivElement>;
@@ -56,6 +58,7 @@ const LearningDashboard = ({
   const [isCreatingComment, setIsCreatingComment] = useState(false);
   const [isRatingLesson, setIsRatingLesson] = useState(false);
   const [isVideoFloating, setIsVideoFloating] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const commentContentRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
@@ -92,7 +95,7 @@ const LearningDashboard = ({
     observer.current.observe(videoContainerRef.current);
 
     return () => observer.current?.disconnect();
-  });
+  }, [appRef]);
 
   return (
     <div className="flex flex-col overflow-auto">
@@ -140,10 +143,17 @@ const LearningDashboard = ({
                     : "absolute top-0 left-0 right-0 bottom-0"
                 }`}
               >
+                {isVideoFloating ? (
+                  <AiOutlineCloseCircle
+                    onClick={() => setIsVideoFloating(false)}
+                    className="fixed bottom-44 right-4 z-30 cursor-pointer text-xl text-black"
+                  />
+                ) : (
+                  <></>
+                )}
                 {selectedLesson.video && (
                   <ReactPlayer
                     key={`video-${selectedLesson.id}`}
-                    controls
                     url={selectedLesson.video}
                     height={"100%"}
                     width={"100%"}
@@ -311,9 +321,9 @@ const LearningDashboard = ({
                   </div>
                   <div
                     ref={commentContentRef}
+                    placeholder="Add a comment..."
                     contentEditable
                     className="min-h-10 max-h-40 w-full overflow-y-auto whitespace-pre-wrap rounded border p-1 outline-none"
-                    placeholder="Add a comment..."
                   ></div>
                   <button
                     className="flex aspect-square h-10 w-10 items-center justify-center rounded border bg-zinc-200 p-1 "
@@ -344,6 +354,54 @@ const LearningDashboard = ({
                   </button>
                 </div>
               </div>
+              {!isChatOpen ? (
+                <div
+                  onClick={() => setIsChatOpen((state) => !state)}
+                  className="fixed bottom-10 z-30 flex h-24 w-24 cursor-pointer items-center justify-center rounded-full border border-slate-400 bg-white  opacity-80"
+                >
+                  <div className="fixed  flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border border-slate-400  bg-sky-600 text-4xl text-black ">
+                    <BsChatLeftDotsFill />
+                  </div>
+                </div>
+              ) : (
+                <div className="fixed bottom-0 z-30 flex h-96 w-60 flex-col items-center justify-start gap-3 rounded-t-xl border border-slate-400 bg-white">
+                  <div
+                    className="flex h-8 w-full cursor-pointer rounded-t-xl bg-sky-600 text-2xl text-black"
+                    onClick={() => setIsChatOpen((state) => !state)}
+                  >
+                    Messages
+                  </div>
+                  <div
+                    contentEditable
+                    className="min-h-10 max-h-40 w-56 overflow-y-auto whitespace-pre-wrap rounded border border-zinc-900 p-1 outline-none"
+                  ></div>
+                  <div className="h-18 flex w-80">
+                    <div className="flex shrink-0 grow-0 snap-y flex-row  gap-2">
+                      {comments.map((comment) => (
+                        <div
+                          key={comment.id}
+                          className={`flex h-16 w-16 cursor-pointer items-center justify-center rounded-full ${
+                            comment.conected ? "bg-lime-500" : "bg-slate-400"
+                          }`}
+                        >
+                          <Image
+                            src={comment.user.image}
+                            width={55}
+                            height={55}
+                            alt="profile-picture"
+                            className="rounded-full"
+                          />
+                        </div>
+                      ))}
+                      <div
+                        className={`flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-2 bg-gray-300 text-3xl`}
+                      >
+                        ...
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             {lesson.html && (
               <div

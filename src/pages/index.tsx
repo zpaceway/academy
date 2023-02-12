@@ -12,6 +12,8 @@ import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { useRouter } from "next/router";
 import { HiOutlineBell } from "react-icons/hi2";
 import LearningDashboard from "../components/LearningDashboard";
+import notifications from "../mock/Notifications";
+import { IoIosWarning, IoIosInformationCircleOutline } from "react-icons/io";
 
 const Home: NextPage = () => {
   const { data: chapters } = useContext(ChaptersContext);
@@ -21,6 +23,8 @@ const Home: NextPage = () => {
   const [selectedLessonId, setSelectedLessonId] = useState<string>();
   const [selectedChapterId, setSelectedChapterId] = useState<string>();
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
+  const [isNotificationsOpened, setIsNotificationsOpened] =
+    useState<boolean>(false);
   const [isUserMenuOpened, setIsUserMenuOpened] = useState<boolean>(false);
 
   const appRef = useRef<HTMLDivElement>(null);
@@ -156,13 +160,19 @@ const Home: NextPage = () => {
           <div className="flex shrink-0 grow-0 flex-row items-center justify-between gap-5 text-xs font-normal">
             <div>
               <HiOutlineBell
-                className="h-20 w-10 cursor-pointer"
-                onClick={() => setIsUserMenuOpened((state) => !state)}
+                className="h-10 w-10 cursor-pointer "
+                onClick={() => {
+                  setIsNotificationsOpened((state) => !state);
+                  setIsUserMenuOpened(false);
+                }}
               />
             </div>
             <div
               className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-base shadow-md"
-              onClick={() => setIsUserMenuOpened((state) => !state)}
+              onClick={() => {
+                setIsUserMenuOpened((state) => !state);
+                setIsNotificationsOpened(false);
+              }}
             >
               {sessionData.user.image ? (
                 <Image
@@ -175,8 +185,34 @@ const Home: NextPage = () => {
               ) : (
                 sessionData.user.name?.at(0)
               )}
+              {isNotificationsOpened && (
+                <div className="absolute top-full right-20 z-30  flex w-96 flex-col divide-y rounded-lg bg-gray-100 p-4 text-base font-normal text-black">
+                  {notifications.map((notification) => (
+                    <div key={notification.id} className="flex flex-row py-2">
+                      <div className="flex w-1/12 items-start">
+                        {notification.type === "warning" ? (
+                          <IoIosWarning className="text-2xl text-red-700" />
+                        ) : (
+                          <IoIosInformationCircleOutline className="text-2xl text-yellow-800" />
+                        )}
+                      </div>
+                      <div className="w-11/12">
+                        <div className=" text-lg font-bold text-black">
+                          {notification.title}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {notification.content}
+                        </div>
+                        <div className="mt-2 text-xs text-zinc-500">
+                          {notification.createdAt.toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               {isUserMenuOpened && (
-                <div className="absolute top-full right-1/2 z-30  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
+                <div className="absolute top-full right-1/2 z-50  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
                   <div className="cursor-pointer py-2">Profile</div>
                   {sessionData.user.role === "ADMIN" && (
                     <div
