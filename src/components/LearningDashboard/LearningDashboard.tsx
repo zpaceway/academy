@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   AiFillStar,
+  AiOutlineCloseCircle,
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
   AiOutlineStar,
@@ -19,10 +20,11 @@ import { apiAjax, apiHook } from "../../utils/api";
 import { BiCheckSquare, BiSquareRounded } from "react-icons/bi";
 import { CgSpinnerTwo } from "react-icons/cg";
 import LessonHTML from "../LessonHTML";
-import comments from "../../mock/comments";
 import Image from "next/image";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
+import { BsChatLeftDotsFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
+import comments from "../../mock/comments";
 
 interface Props {
   appRef: RefObject<HTMLDivElement>;
@@ -92,7 +94,7 @@ const LearningDashboard = ({
     observer.current.observe(videoContainerRef.current);
 
     return () => observer.current?.disconnect();
-  });
+  }, [appRef]);
 
   return (
     <div className="flex flex-col overflow-auto">
@@ -141,13 +143,24 @@ const LearningDashboard = ({
                 }`}
               >
                 {selectedLesson.video && (
-                  <ReactPlayer
-                    key={`video-${selectedLesson.id}`}
-                    controls
-                    url={selectedLesson.video}
-                    height={"100%"}
-                    width={"100%"}
-                  />
+                  <div className="flex h-full w-full flex-col">
+                    {isVideoFloating ? (
+                      <div className="flex w-full justify-end rounded-t-md border-t bg-zinc-100 p-2">
+                        <AiOutlineCloseCircle
+                          onClick={() => setIsVideoFloating(false)}
+                          className="z-30 cursor-pointer text-xl text-black"
+                        />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    <ReactPlayer
+                      key={`video-${selectedLesson.id}`}
+                      url={selectedLesson.video}
+                      height={"100%"}
+                      width={"100%"}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -189,7 +202,7 @@ const LearningDashboard = ({
               <div>
                 {!isCompletingLesson &&
                   (lessonsMetadata.completed[selectedLesson.id] ? (
-                    <BiCheckSquare className="text-white" />
+                    <BiCheckSquare className="text-green-500" />
                   ) : (
                     <BiSquareRounded />
                   ))}
@@ -311,9 +324,9 @@ const LearningDashboard = ({
                   </div>
                   <div
                     ref={commentContentRef}
+                    placeholder="Add a comment..."
                     contentEditable
                     className="min-h-10 max-h-40 w-full overflow-y-auto whitespace-pre-wrap rounded border p-1 outline-none"
-                    placeholder="Add a comment..."
                   ></div>
                   <button
                     className="flex aspect-square h-10 w-10 items-center justify-center rounded border bg-zinc-200 p-1 "
@@ -322,7 +335,8 @@ const LearningDashboard = ({
                       apiAjax.lessons.addLessonComment
                         .mutate({
                           lessonId: selectedLesson.id,
-                          content: commentContentRef.current?.innerText || "",
+                          content:
+                            commentContentRef.current?.innerText.trim() || "",
                         })
                         .then(() => refetchGetLesson().catch(console.error))
                         .then(() => {
@@ -348,11 +362,8 @@ const LearningDashboard = ({
             {lesson.html && (
               <div
                 className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
-                  isNavBarOpened && selectedLesson.video
-                    ? "xl:mb-24"
-                    : selectedLesson.video
-                    ? "lg:mb-24"
-                    : ""
+                  selectedLesson.video &&
+                  (isNavBarOpened ? "xl:mb-24" : "lg:mb-24")
                 }`}
               >
                 <LessonHTML html={lesson.html} />
