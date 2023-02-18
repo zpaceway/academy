@@ -130,7 +130,7 @@ const Home: NextPage = () => {
       />
       <div className="flex h-full w-full flex-col">
         <div className="flex h-24 w-full shrink-0 items-center justify-between gap-2 bg-orange-600 px-6 text-2xl font-bold text-white">
-          <div className="flex items-center gap-2">
+          <div className="flex h-full items-center gap-2">
             <div>
               <GiHamburgerMenu
                 onClick={() => setIsNavBarOpened((state) => !state)}
@@ -141,7 +141,14 @@ const Home: NextPage = () => {
             </div>
             {selectedChapter && (
               <div
-                className="cursor-pointer text-sm font-normal"
+                className="m-auto max-h-[70%] max-w-2xl cursor-pointer text-sm font-normal"
+                style={{
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  whiteSpace: "pre-wrap",
+                }}
                 onClick={() => {
                   setOpenedChapterId(selectedChapter.id);
                   setIsNavBarOpened((state) => !state);
@@ -150,9 +157,7 @@ const Home: NextPage = () => {
                     ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                {selectedChapter.name.length <= 100
-                  ? selectedChapter.name
-                  : `${selectedChapter.name.substring(0, 100)}...`}
+                {selectedChapter.name}
               </div>
             )}
           </div>
@@ -186,7 +191,7 @@ const Home: NextPage = () => {
                 sessionData.user.name?.at(0)
               )}
               {isNotificationsMenuOpened && (
-                <div className="absolute top-full right-20 z-30  flex w-96 flex-col divide-y rounded-lg bg-gray-100 p-4 text-base font-normal text-black">
+                <div className="fixed inset-0 top-24 z-30 flex flex-col divide-y rounded-lg bg-gray-100 p-4 text-base font-normal text-black sm:absolute sm:top-full sm:left-auto sm:bottom-auto sm:right-20 sm:w-96">
                   {notifications.map((notification) => (
                     <div key={notification.id} className="flex flex-row py-2">
                       <div className="flex w-1/12 items-start">
