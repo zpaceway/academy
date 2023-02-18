@@ -12,7 +12,7 @@ import LessonsMetadataContext from "../context/LessonsMetadataContext";
 import { useRouter } from "next/router";
 import { HiOutlineBell } from "react-icons/hi2";
 import LearningDashboard from "../components/LearningDashboard";
-import notifications from "../mock/Notifications";
+import notifications from "../mock/notifications";
 import { IoIosWarning, IoIosInformationCircleOutline } from "react-icons/io";
 
 const Home: NextPage = () => {
@@ -23,8 +23,8 @@ const Home: NextPage = () => {
   const [selectedLessonId, setSelectedLessonId] = useState<string>();
   const [selectedChapterId, setSelectedChapterId] = useState<string>();
   const [isNavBarOpened, setIsNavBarOpened] = useState<boolean>();
-  const [isNotificationsOpened, setIsNotificationsOpened] =
-    useState<boolean>(false);
+  const [isNotificationsMenuOpened, setIsNotificationsMenuOpened] =
+    useState(false);
   const [isUserMenuOpened, setIsUserMenuOpened] = useState<boolean>(false);
 
   const appRef = useRef<HTMLDivElement>(null);
@@ -162,7 +162,7 @@ const Home: NextPage = () => {
               <HiOutlineBell
                 className="h-10 w-10 cursor-pointer "
                 onClick={() => {
-                  setIsNotificationsOpened((state) => !state);
+                  setIsNotificationsMenuOpened((state) => !state);
                   setIsUserMenuOpened(false);
                 }}
               />
@@ -171,7 +171,7 @@ const Home: NextPage = () => {
               className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-base shadow-md"
               onClick={() => {
                 setIsUserMenuOpened((state) => !state);
-                setIsNotificationsOpened(false);
+                setIsNotificationsMenuOpened(false);
               }}
             >
               {sessionData.user.image ? (
@@ -185,7 +185,7 @@ const Home: NextPage = () => {
               ) : (
                 sessionData.user.name?.at(0)
               )}
-              {isNotificationsOpened && (
+              {isNotificationsMenuOpened && (
                 <div className="absolute top-full right-20 z-30  flex w-96 flex-col divide-y rounded-lg bg-gray-100 p-4 text-base font-normal text-black">
                   {notifications.map((notification) => (
                     <div key={notification.id} className="flex flex-row py-2">
@@ -212,11 +212,13 @@ const Home: NextPage = () => {
                 </div>
               )}
               {isUserMenuOpened && (
-                <div className="absolute top-full right-1/2 z-50  flex w-40 flex-col divide-y rounded-lg bg-white p-4 text-base font-normal text-black">
-                  <div className="cursor-pointer py-2">Profile</div>
+                <div className="absolute top-full right-1/2 z-50 flex w-40 flex-col divide-y rounded-lg border bg-white text-base font-normal text-black">
+                  <div className="cursor-pointer p-4 hover:bg-zinc-200">
+                    Profile
+                  </div>
                   {sessionData.user.role === "ADMIN" && (
                     <div
-                      className="cursor-pointer py-2"
+                      className="cursor-pointer p-4 hover:bg-zinc-200"
                       onClick={() => {
                         router.push("/admin/content").catch(console.error);
                       }}
@@ -225,7 +227,7 @@ const Home: NextPage = () => {
                     </div>
                   )}
                   <div
-                    className="cursor-pointer py-2"
+                    className="cursor-pointer p-4 hover:bg-zinc-200"
                     onClick={() => {
                       signOut()
                         .then(() => router.push("/").catch(console.error))

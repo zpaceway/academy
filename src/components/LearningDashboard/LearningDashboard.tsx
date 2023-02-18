@@ -58,7 +58,6 @@ const LearningDashboard = ({
   const [isCreatingComment, setIsCreatingComment] = useState(false);
   const [isRatingLesson, setIsRatingLesson] = useState(false);
   const [isVideoFloating, setIsVideoFloating] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const commentContentRef = useRef<HTMLDivElement>(null);
   const observer = useRef<IntersectionObserver>();
@@ -143,21 +142,25 @@ const LearningDashboard = ({
                     : "absolute top-0 left-0 right-0 bottom-0"
                 }`}
               >
-                {isVideoFloating ? (
-                  <AiOutlineCloseCircle
-                    onClick={() => setIsVideoFloating(false)}
-                    className="fixed bottom-44 right-4 z-30 cursor-pointer text-xl text-black"
-                  />
-                ) : (
-                  <></>
-                )}
                 {selectedLesson.video && (
-                  <ReactPlayer
-                    key={`video-${selectedLesson.id}`}
-                    url={selectedLesson.video}
-                    height={"100%"}
-                    width={"100%"}
-                  />
+                  <div className="flex h-full w-full flex-col">
+                    {isVideoFloating ? (
+                      <div className="flex w-full justify-end rounded-t-md border-t bg-zinc-100 p-2">
+                        <AiOutlineCloseCircle
+                          onClick={() => setIsVideoFloating(false)}
+                          className="z-30 cursor-pointer text-xl text-black"
+                        />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    <ReactPlayer
+                      key={`video-${selectedLesson.id}`}
+                      url={selectedLesson.video}
+                      height={"100%"}
+                      width={"100%"}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -199,7 +202,7 @@ const LearningDashboard = ({
               <div>
                 {!isCompletingLesson &&
                   (lessonsMetadata.completed[selectedLesson.id] ? (
-                    <BiCheckSquare className="text-white" />
+                    <BiCheckSquare className="text-green-500" />
                   ) : (
                     <BiSquareRounded />
                   ))}
@@ -332,7 +335,8 @@ const LearningDashboard = ({
                       apiAjax.lessons.addLessonComment
                         .mutate({
                           lessonId: selectedLesson.id,
-                          content: commentContentRef.current?.innerText || "",
+                          content:
+                            commentContentRef.current?.innerText.trim() || "",
                         })
                         .then(() => refetchGetLesson().catch(console.error))
                         .then(() => {
@@ -354,63 +358,12 @@ const LearningDashboard = ({
                   </button>
                 </div>
               </div>
-              {!isChatOpen ? (
-                <div
-                  onClick={() => setIsChatOpen((state) => !state)}
-                  className="fixed bottom-10 z-30 flex h-24 w-24 cursor-pointer items-center justify-center rounded-full border border-slate-400 bg-white  opacity-80"
-                >
-                  <div className="fixed  flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border border-slate-400  bg-sky-600 text-4xl text-black ">
-                    <BsChatLeftDotsFill />
-                  </div>
-                </div>
-              ) : (
-                <div className="fixed bottom-0 z-30 flex h-96 w-60 flex-col items-center justify-start gap-3 rounded-t-xl border border-slate-400 bg-white">
-                  <div
-                    className="flex h-8 w-full cursor-pointer rounded-t-xl bg-sky-600 text-2xl text-black"
-                    onClick={() => setIsChatOpen((state) => !state)}
-                  >
-                    Messages
-                  </div>
-                  <div
-                    contentEditable
-                    className="min-h-10 max-h-40 w-56 overflow-y-auto whitespace-pre-wrap rounded border border-zinc-900 p-1 outline-none"
-                  ></div>
-                  <div className="h-18 flex w-80">
-                    <div className="flex shrink-0 grow-0 snap-y flex-row  gap-2">
-                      {comments.map((comment) => (
-                        <div
-                          key={comment.id}
-                          className={`flex h-16 w-16 cursor-pointer items-center justify-center rounded-full ${
-                            comment.conected ? "bg-lime-500" : "bg-slate-400"
-                          }`}
-                        >
-                          <Image
-                            src={comment.user.image}
-                            width={55}
-                            height={55}
-                            alt="profile-picture"
-                            className="rounded-full"
-                          />
-                        </div>
-                      ))}
-                      <div
-                        className={`flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-2 bg-gray-300 text-3xl`}
-                      >
-                        ...
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
             {lesson.html && (
               <div
                 className={`z-0 -mb-16 flex h-full w-full flex-col p-6 md:min-w-[500px] ${
-                  isNavBarOpened && selectedLesson.video
-                    ? "xl:mb-24"
-                    : selectedLesson.video
-                    ? "lg:mb-24"
-                    : ""
+                  selectedLesson.video &&
+                  (isNavBarOpened ? "xl:mb-24" : "lg:mb-24")
                 }`}
               >
                 <LessonHTML html={lesson.html} />
